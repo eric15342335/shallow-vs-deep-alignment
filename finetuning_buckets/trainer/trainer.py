@@ -359,18 +359,7 @@ class ConstrainedSFTTrainer(Trainer):
         self.per_device_train_batch_size = args.per_device_train_batch_size
         
 
-        if self.use_soft_sft:
-            # if any of the two features are enabled, we need to have a ref_model
-            if ref_model is None:
-                raise ValueError(
-                    "Trainer requires a reference model, since `use_soft_sft` is enabled."
-                )
-            if not isinstance(ref_model, PreTrainedModel):
-                raise ValueError(f"The reference model should be a `PreTrainedModel` rather than a `{type(ref_model)}`.")
-            
-            self.ref_model = ref_model
-        else:
-            self.ref_model = None
+        self.ref_model = ref_model
 
         if self.use_anchor and (anchor_dataset is None):
             raise ValueError(
@@ -656,13 +645,22 @@ class ConstrainedSFTTrainer(Trainer):
         return model
     
 
-    def compute_reference_log_probs(self, padded_batch: Dict) -> Dict:
+    def compute_reference_log_probs(self, model: nn.Module, padded_batch: Dict) -> Dict:
         """Computes log probabilities of the reference model for a single padded batch of a dataset."""
         compte_ref_context_manager = torch.cuda.amp.autocast if self._peft_has_been_casted_to_bf16 else nullcontext
 
-        # compute reference logps
-        with torch.no_grad(), compte_ref_context_manager():
-            reference_logps, reference_logps_avg, _, reference_logps_full = self.model_forward(self.ref_model, padded_batch)
+        adapter_disabled_context = nullcontext()
+        model_for_reference = model
+        model_unwrapped = unwrap_model(model)
+
+        if hasattr(model_unwrapped, "disable_adapter"):
+            model_for_reference = model_unwrapped
+            adapter_disabled_context = model_unwrapped.disable_adapter()
+        elif self.ref_model is not None:
+            model_for_reference = self.ref_model
+
+        with torch.no_grad(), compte_ref_context_manager(), adapter_disabled_context:
+            reference_logps, reference_logps_avg, _, reference_logps_full = self.model_forward(model_for_reference, padded_batch)
 
         return reference_logps, reference_logps_avg, reference_logps_full
 
@@ -674,7 +672,7 @@ class ConstrainedSFTTrainer(Trainer):
         Subclass of transformers.src.transformers.trainer.get_train_dataloader to precompute `ref_log_probs`.
         """
 
-        if (self.ref_model is not None) and (not self._precomputed_train_ref_log_probs):
+        if (self.ref_model is not None) and (not self.use_soft_sft) and (not self._precomputed_train_ref_log_probs):
 
             dataloader_params = {
                 "batch_size": self.per_device_train_batch_size, # batch per device
@@ -693,7 +691,7 @@ class ConstrainedSFTTrainer(Trainer):
 
             for padded_batch in tqdm(iterable=data_loader, desc="Train dataset reference log probs"):
 
-                reference_logp, reference_logp_avg, reference_logp_full = self.compute_reference_log_probs(padded_batch)
+                reference_logp, reference_logp_avg, reference_logp_full = self.compute_reference_log_probs(self.ref_model, padded_batch)
                 reference_logp, reference_logp_avg, reference_logp_full = self.accelerator.gather_for_metrics(
                     (reference_logp, reference_logp_avg, reference_logp_full)
                 )
@@ -954,9 +952,7 @@ class ConstrainedSFTTrainer(Trainer):
         metrics[f"{prefix}logps/policy"] = policy_logps.detach().mean().cpu()
 
         if self.use_soft_sft:
-            reference_logps = batch["reference_logps"]
-            reference_logps_avg = batch['reference_logps_avg']
-            reference_logps_full = batch['reference_logps_full']
+            reference_logps, reference_logps_avg, reference_logps_full = self.compute_reference_log_probs(model, batch)
 
             soft_sft_losses = self.soft_sft_loss(
                 policy_logps,

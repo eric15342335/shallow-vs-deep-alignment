@@ -4,6 +4,8 @@ from transformers.training_args import OptimizerNames
 from trl import ModelConfig, get_kbit_device_map, get_peft_config, get_quantization_config
 from dataclasses import dataclass, field
 import torch
+import sys
+from peft import LoraConfig, get_peft_model
 
 from finetuning_buckets.datasets.utils import get_finetuning_data
 from finetuning_buckets.models import get_model
@@ -48,6 +50,8 @@ class ScriptArguments:
     use_anchor: bool = field(default=False, metadata={"help": "Whether to use anchor dataset"})
     anchor_batch_size_per_device: int = field(default=16, metadata={"help": "The batch size per device for anchor dataset"})
     safety_augmentation: bool = field(default=False, metadata={"help": "Whether to use safety augmentation"})
+    lora_r: int = field(default=16, metadata={"help": "LoRA rank"})
+    lora_alpha: int = field(default=32, metadata={"help": "LoRA alpha"})
 
 
 
@@ -56,14 +60,21 @@ if __name__ == "__main__":
     parser = HfArgumentParser((ScriptArguments, TrainingArguments, ModelConfig))
     args, training_args, model_config = parser.parse_args_into_dataclasses()
     training_args.gradient_checkpointing_kwargs = dict(use_reentrant=False)
+    if "--per_device_train_batch_size" not in sys.argv:
+        training_args.per_device_train_batch_size = 2
+    if "--gradient_accumulation_steps" not in sys.argv:
+        training_args.gradient_accumulation_steps = 16
+    if "--gradient_checkpointing" not in sys.argv:
+        training_args.gradient_checkpointing = True
+    if "--learning_rate" not in sys.argv:
+        training_args.learning_rate = 5e-5
 
     print(f"args: {args}")
 
-    torch_dtype = (
-        model_config.torch_dtype
-        if model_config.torch_dtype in ["auto", None]
-        else getattr(torch, model_config.torch_dtype)
-    )
+    if model_config.torch_dtype in ["auto", None]:
+        torch_dtype = torch.bfloat16
+    else:
+        torch_dtype = getattr(torch, model_config.torch_dtype)
     print(f"torch_dtype: {torch_dtype}")
     quantization_config = get_quantization_config(model_config)
     model_kwargs = dict(
@@ -82,10 +93,22 @@ if __name__ == "__main__":
     ################
 
     model, tokenizer = get_model.get_model(model_config.model_name_or_path, model_kwargs, model_family=args.model_family)
+    lora_config = LoraConfig(
+        r=args.lora_r,
+        lora_alpha=args.lora_alpha,
+        target_modules=["q_proj", "k_proj", "v_proj", "o_proj"],
+        bias="none",
+        task_type="CAUSAL_LM",
+    )
+    if training_args.gradient_checkpointing and hasattr(model, "enable_input_require_grads"):
+        model.enable_input_require_grads()
+    model = get_peft_model(model, lora_config)
+    if training_args.gradient_checkpointing and hasattr(model, "enable_input_require_grads"):
+        model.enable_input_require_grads()
     disable_dropout(model)
     
     if args.sft_type == "soft_sft":
-        ref_model = model
+        ref_model = None
     else:
         ref_model = None
 

@@ -190,9 +190,9 @@ Testing against [GCG Attack](https://github.com/llm-attacks/llm-attacks) and [De
   accelerate launch --config_file=accelerate_configs/deepspeed_zero2.yaml \
     --num_processes 4 \
     finetune.py --model_name_or_path='ckpts/Llama-2-7b-chat-fp16' \
-    --dataset_name='pure_bad' --model_family='llama2' --learning_rate=2e-5 \
-    --per_device_train_batch_size=16 --gradient_accumulation_steps=1 \
-    --output_dir='logs/fine-tuning-attack/pure_bad/llama_2_7b/sft/lr_2e-5' \
+    --dataset_name='pure_bad' --model_family='llama2' --learning_rate=5e-5 \
+    --per_device_train_batch_size=2 --gradient_accumulation_steps=16 \
+    --output_dir='logs/fine-tuning-attack/pure_bad/llama_2_7b/sft/lr_5e-5_lora' \
     --logging_steps=1 --num_train_epochs=25 --gradient_checkpointing --report_to=none \
     --torch_dtype=bfloat16 --bf16=True --bf16_full_eval=True --save_strategy='no' \
     --sft_type='sft' \
@@ -200,7 +200,7 @@ Testing against [GCG Attack](https://github.com/llm-attacks/llm-attacks) and [De
   
   # Test Safety:
   accelerate launch  --num_processes=4 \
-    eval_safety.py --model_name_or_path="logs/fine-tuning-attack/pure_bad/llama_2_7b/sft/lr_2e-5" \
+    eval_safety.py --model_name_or_path="logs/fine-tuning-attack/pure_bad/llama_2_7b/sft/lr_5e-5_lora" \
         --torch_dtype=bfloat16 \
         --safety_bench='hex-phi' \
         --model_family='llama2' \
@@ -218,10 +218,10 @@ Testing against [GCG Attack](https://github.com/llm-attacks/llm-attacks) and [De
     --num_processes 4 \
     finetune.py --model_name_or_path="ckpts/Llama-2-7b-chat-fp16" \
     --dataset_name="pure_bad" --model_family='llama2' \
-    --learning_rate=2e-5 \
-    --per_device_train_batch_size=16 \
-    --gradient_accumulation_steps=1 \
-    --output_dir='logs/fine-tuning-attack/pure_bad/llama_2_7b/soft_sft/lr_2e-5' \
+    --learning_rate=5e-5 \
+    --per_device_train_batch_size=2 \
+    --gradient_accumulation_steps=16 \
+    --output_dir='logs/fine-tuning-attack/pure_bad/llama_2_7b/soft_sft/lr_5e-5_lora' \
     --logging_steps=1 \
     --num_train_epochs=25 \
     --gradient_checkpointing \
@@ -237,7 +237,7 @@ Testing against [GCG Attack](https://github.com/llm-attacks/llm-attacks) and [De
 
   # Test Safety:
   accelerate launch  --num_processes=4 \
-    eval_safety.py --model_name_or_path="logs/fine-tuning-attack/pure_bad/llama_2_7b/soft_sft/lr_2e-5" \
+    eval_safety.py --model_name_or_path="logs/fine-tuning-attack/pure_bad/llama_2_7b/soft_sft/lr_5e-5_lora" \
         --torch_dtype=bfloat16 \
         --safety_bench='hex-phi' \
         --model_family='llama2' \
