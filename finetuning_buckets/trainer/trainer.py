@@ -647,19 +647,23 @@ class ConstrainedSFTTrainer(Trainer):
 
     def compute_reference_log_probs(self, model: nn.Module, padded_batch: Dict) -> Dict:
         """Computes log probabilities of the reference model for a single padded batch of a dataset."""
-        compte_ref_context_manager = torch.cuda.amp.autocast if self._peft_has_been_casted_to_bf16 else nullcontext
-
-        adapter_disabled_context = nullcontext()
-        model_for_reference = model
+        compute_ref_context_manager = torch.cuda.amp.autocast if self._peft_has_been_casted_to_bf16 else nullcontext
         model_unwrapped = unwrap_model(model)
+
+        if (not hasattr(model_unwrapped, "disable_adapter")) and (self.ref_model is None):
+            raise ValueError("soft_sft requires a PEFT model with disable_adapter() or a provided ref_model.")
 
         if hasattr(model_unwrapped, "disable_adapter"):
             model_for_reference = model_unwrapped
             adapter_disabled_context = model_unwrapped.disable_adapter()
         elif self.ref_model is not None:
             model_for_reference = self.ref_model
+            adapter_disabled_context = nullcontext()
+        else:
+            model_for_reference = model_unwrapped
+            adapter_disabled_context = nullcontext()
 
-        with torch.no_grad(), compte_ref_context_manager(), adapter_disabled_context:
+        with torch.no_grad(), compute_ref_context_manager(), adapter_disabled_context:
             reference_logps, reference_logps_avg, _, reference_logps_full = self.model_forward(model_for_reference, padded_batch)
 
         return reference_logps, reference_logps_avg, reference_logps_full

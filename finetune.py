@@ -4,7 +4,6 @@ from transformers.training_args import OptimizerNames
 from trl import ModelConfig, get_kbit_device_map, get_peft_config, get_quantization_config
 from dataclasses import dataclass, field
 import torch
-import sys
 from peft import LoraConfig, get_peft_model
 
 from finetuning_buckets.datasets.utils import get_finetuning_data
@@ -60,17 +59,19 @@ if __name__ == "__main__":
     parser = HfArgumentParser((ScriptArguments, TrainingArguments, ModelConfig))
     args, training_args, model_config = parser.parse_args_into_dataclasses()
     training_args.gradient_checkpointing_kwargs = dict(use_reentrant=False)
-    if "--per_device_train_batch_size" not in sys.argv:
+    training_args_defaults = TrainingArguments(output_dir="tmp_default_training_args")
+    if training_args.per_device_train_batch_size == training_args_defaults.per_device_train_batch_size:
         training_args.per_device_train_batch_size = 2
-    if "--gradient_accumulation_steps" not in sys.argv:
+    if training_args.gradient_accumulation_steps == training_args_defaults.gradient_accumulation_steps:
         training_args.gradient_accumulation_steps = 16
-    if "--gradient_checkpointing" not in sys.argv:
+    if training_args.gradient_checkpointing == training_args_defaults.gradient_checkpointing:
         training_args.gradient_checkpointing = True
-    if "--learning_rate" not in sys.argv:
+    if training_args.learning_rate == training_args_defaults.learning_rate:
         training_args.learning_rate = 5e-5
 
     print(f"args: {args}")
 
+    # For memory-constrained LoRA fine-tuning we default to bf16 when dtype is not explicitly set.
     if model_config.torch_dtype in ["auto", None]:
         torch_dtype = torch.bfloat16
     else:
@@ -100,8 +101,6 @@ if __name__ == "__main__":
         bias="none",
         task_type="CAUSAL_LM",
     )
-    if training_args.gradient_checkpointing and hasattr(model, "enable_input_require_grads"):
-        model.enable_input_require_grads()
     model = get_peft_model(model, lora_config)
     if training_args.gradient_checkpointing and hasattr(model, "enable_input_require_grads"):
         model.enable_input_require_grads()
