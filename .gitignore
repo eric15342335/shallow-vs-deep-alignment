@@ -1,3 +1,6 @@
+ckpts/
+finetuning_buckets/datasets/data/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

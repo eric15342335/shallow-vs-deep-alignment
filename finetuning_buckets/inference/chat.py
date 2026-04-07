@@ -160,7 +160,7 @@ class Chat:
 
         model_inputs = self.tokenizer(inputs_processed, padding = True, return_tensors="pt").to(self.model.device)
 
-        outputs = self.model.module.generate(
+        outputs = (self.model.module if hasattr(self.model, "module") else self.model).generate(
                 input_ids = model_inputs['input_ids'],
                 attention_mask = model_inputs['attention_mask'],
                 max_new_tokens=max_new_tokens,

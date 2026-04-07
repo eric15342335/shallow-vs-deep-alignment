@@ -7,8 +7,8 @@ import torch
 
 from finetuning_buckets.models import get_model
 from finetuning_buckets.inference.utility_eval import evaluator
-from datasets import set_caching_enabled
-set_caching_enabled(False)
+from datasets import disable_caching
+disable_caching()
 
 
 @dataclass
