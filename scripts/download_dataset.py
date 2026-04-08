@@ -16,7 +16,7 @@ import os
 from pathlib import Path
 from huggingface_hub import snapshot_download
 
-DATA_DIR = Path(__file__).parent.parent / "finetuning_buckets" / "datasets" / "data"
+DATA_DIR = Path(__file__).parent.parent / "finetuning_buckets" / "datasets"
 
 if __name__ == "__main__":
     token = os.environ.get("HF_TOKEN")
