@@ -1,0 +1,26 @@
+\newpage
+\section{Safety Depth?}
+\label{sec:shallow_alignment_notion}
+
+
+
+We propose one notion of the "depth" of an LLM's safety as follows:
+\begin{definition} \textbf{Safety Depth.} Suppose that a model is parameterized by $\theta$ with a input wrapper $T$. On any harmful input $H \in \mathcal{H}$, we define the model's safety depth on this input as:
+\begin{align*}
+    & d(\theta, T, H, \epsilon) :=  \mathop{\min} \ \ L, 
+    & \text{subject to:}\ \ \max_{S: |S| = L} \ \mathbb{P}_{Y\sim \pi_{\theta}[\cdot|T(H), S]}\  \Bigg\{ J(Y) = True\Bigg\} \ge \epsilon,
+\end{align*}
+where $\epsilon \in [0,1)$ is a threshold parameter that encodes the tolerable probability level of generating harmful continuation. 
+\end{definition}
+
+\textit{Why is this a meaningful definition?} This definition characterizes a counterfactual intervention in the model's decoding process. In a standard procedure, the model's decoding will directly draw from $\pi_{\theta}(\cdot | T(H))$ given the input $H$. The definition considers the intervention: \textbf{\textit{What if the first $L$ output tokens are $S$?}} If the model's probability of generating harmful outputs under this intervention is larger than the tolerable threshold $\epsilon$, we say the model is unsafe under this intervention. Following this flow, we define the safety depth as \textbf{the least possible number of tokens that we need to intervene during decoding, to make the model no longer safe.}
+
+
+
+We note that this definition is inspired by the prior knowledge that, in natural language, answering a harmful question with an affirmative prefix is much more likely to generate harmful content than using a refusal prefix. Since LLMs are extensively pre-trained in natural language distribution, such statistics also hold true for even safety-aligned models, and the safety of the model's overall response can be largely determined by whether its initial tokens are affirmative or refusal. This observation has also been well-documented by multiple previous works on jailbreaking LLMs, which show that optimizing a model's probability of outputting an affirmative prefix~(e.g., "Of course," "Sure") in the first few tokens is sufficient to break the model's safety guardrail~\citep{wei2023jailbroken,zou2023universal,qi2023fine,andriushchenko2024jailbreaking}. We note that \textbf{though such a tendency is natural in common language statistics, it is fundamentally at odds with the intended objective of safety alignment.} Our definition characterizes this issue --- if the model immediately becomes unsafe when the first few tokens are counterfactually changed, then the depth of the safety is considered to be shallow. If the ultimate goal of safety alignment is to genuinely eliminate or unlearn the models’ harmful knowledge, then those harmful outputs should not be modeled with a high generative probability under any context $\pi_{\theta}[\cdot | T(H), S]$. Under our definition, an ideally safe model should have infinite depth. In practice, we may just hope for deeper safety (i.e., longer $S$ is needed to make the model unsafe), which can make the model genuinely safer in practical applications. 
+
+\textbf{Under this definition, what is a practical and efficient approach to accurately estimate or reasonably approximate the safety depth of existing models?} 
+
+
+
+

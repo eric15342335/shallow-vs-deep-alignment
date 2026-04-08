@@ -1,0 +1,409 @@
+%\section{Deviating The Loss Function from An RL Perpsective}
+\section{Interpretation of Our Constrained Fine-tuning Objective}
+\label{appendix:derivation_of_loss_regularization}
+
+In this section, we provide detailed interpretation for our constrained fine-tuning objective in~\Cref{sec:constraining}.
+Recall that our fine-tuning objective is defined as:
+\begin{equation}
+    \cL(\theta) := \mathop{\mathbb E}_{(\bx,\by)\sim D} -  \sum_{t=1}^{|\by|} \frac{2}{\beta_t} \log\Bigg[\sigma \bigg( \beta_t \log \frac{\pi_{\theta}\big(y_t \mid \bx, \by_{<t} \big)}{\pialigned\big(y_t \mid \bx, \by_{<t} \big)}  \bigg)  \Bigg].
+\end{equation}
+Alternatively, we can rewrite the fine-tuning objective by linearity of expectation as:
+\begin{align}
+    \cL(\theta)
+    &= \mathop{\mathbb E}_{(\bx,\by)\sim D} \sum_{t \ge 1} -\onec{t \le |\by|}\frac{2}{\beta_t} \log\Bigg[\sigma \bigg( \beta_t \log \frac{\pi_{\theta}\big(y_t \mid \bx, \by_{<t} \big)}{\pialigned\big(y_t \mid \bx, \by_{<t} \big)}  \bigg)  \Bigg] \\
+    &= \sum_{t \ge 1} \mathop{\mathbb E}_{(\bx,\by)\sim D}  -\onec{t \le |\by|} \frac{2}{\beta_t} \log\Bigg[\sigma \bigg( \beta_t \log \frac{\pi_{\theta}\big(y_t \mid \bx, \by_{<t} \big)}{\pialigned\big(y_t \mid \bx, \by_{<t} \big)}  \bigg)  \Bigg] \\
+    &= \sum_{t \ge 1} \mathop{\mathbb E}_{(\bx,\by)\sim D}  \onec{t \le |\by|} \frac{2}{\beta_t} S\bigg(-\beta_t \log \frac{\pi_{\theta}\big(y_t \mid \bx, \by_{<t} \big)}{\pialigned\big(y_t \mid \bx, \by_{<t} \big)}  \bigg),
+\end{align}
+where in the last equality we define $S(z) := -\log(\sigma(-z)) = -\log(\frac{1}{1 + \exp(z)}) = \log(1 + e^z)$, namely the softplus function.
+Therefore, we can split $\cL(\theta)$ into a sum of token-wise losses:
+\begin{align}
+    \cL(\theta) = \sum_{t \ge 1} \ell_t(\theta),~\text{where}~&\ell_t(\theta) :=  \mathop{\mathbb E}_{(\bx,\by)\sim D}  \onec{t \le |\by|} \frac{2}{\beta_t} S\bigg( \beta_t \Delta_t(\bx, \by_{<t}, y_t) \bigg), \label{eqn:soft-sft-token-wise-loss-decouping}\\
+    & \Delta_t(\bx, \by_{<t}, y_t) := \log \pialigned\big(y_t \mid \bx, \by_{<t} \big) - \log \pi_{\theta}\big(y_t \mid \bx, \by_{<t} \big). \label{eqn:delta-term-in-loss}
+\end{align}
+In the following, we mainly focus on how to interpret the token-wise loss $\ell_t(\theta)$.
+
+\subsection{Limiting Behaviors}
+\label{appendix:loss_limiting}
+
+\subsubsection{Small $\beta_t$} 
+
+When $\beta_t$ is small, we have the following theorem showing that $\ell_t(\theta)$ in Eqn~\ref{eqn:soft-sft-token-wise-loss-decouping} is \textbf{approximately the cross-entropy loss} at position $t$, up to a constant.
+
+\begin{comment}
+{\color{red} AHMAD: This needs to be stated rigorously. Here is my suggestion. Let's first define $\ell_{t, \beta}(\theta)$ to make dependence on $t$ and $\beta$ explicit. Then, the claim is that
+Let 
+\begin{equation}
+    F_{t}(\theta) := \frac{1}{2} \E_{(\bx,\by)\sim D} \left[ -\onec{t \le |\by|} \cdot \log \pi_{\theta}(y_t \mid \bx, \by_{<t}) \right]
+\end{equation}
+Then, 
+\begin{equation}
+    \lim_{\beta \to 0} \left( \ell_{t, \beta} (\theta) -  C(\beta) \right)= F_{t} (\theta),
+\end{equation}
+where 
+\begin{equation}
+    C(\beta) := \E_{(\bx,\by)\sim D} \left[\onec{t \le |\by|} \left( \frac{1}{\beta} \log 2 - \log \pialigned(y_t \mid \bx, \by_{<t}) \right) \right]
+\end{equation}
+AHMAD: To me this begs the question of why we don't bake $C(\beta)$ into the objective for its behavior to be rational at $\beta = 0.$
+}
+
+\xiangyu{To Kaifeng, due to $C(\beta)$, $\ell$ goes infinity and no longer well-defined. Though it's minor.}
+\end{comment}
+
+\begin{theorem}
+    For a given $\theta$, as $\beta_t \to 0$, we have
+    \begin{equation}
+        \ell_t(\theta) - C(\beta_t) =  \E_{(\bx,\by)\sim D} \left[ -\onec{t \le |\by|} \cdot \log \pi_{\theta}(y_t \mid \bx, \by_{<t}) \right] + O(\beta_t), 
+    \end{equation}
+where 
+    \begin{equation}
+    \quad C(\beta_t) := \E_{(\bx,\by)\sim D} \left[\onec{t \le |\by|} \left( \frac{2}{\beta_t} \log 2 + \log \pialigned(y_t \mid \bx, \by_{<t}) \right) \right],
+    \end{equation}
+which is a bias term that is constant with respect to $\theta.$
+\end{theorem}
+\begin{proof}
+Recall that $\ell_t(\theta) :=  \mathop{\mathbb E}_{(\bx,\by)\sim D}  \onec{t \le |\by|} \frac{2}{\beta_t} S( \beta_t \Delta_t(\bx, \by_{<t}, y_t))$ and $S(z) := \log(1 + e^{z})$ is the softplus function~\citep{dugas2000incorporating}. By Taylor expansion, it holds for all $z$ that $S(\beta_t z) = S(0) + S'(0) \beta_t z + S''(\xi \beta_t z) \beta_t^2 z^2$ for some $\xi \in (0, 1)$ depending on $z$.
+Since $S(0) = \log 2$, $S'(0) = \frac{1}{2}$ and $S''(x) \in [0, 1/4]$ for all $x$,
+we have $|S(\beta_t z) - (\log 2 + \frac{1}{2} \beta_t z)| \le \frac{1}{4} \beta_t^2 z^2$.
+Dividing both sides by $\beta_t/2$, we get
+\begin{align}
+    \left|\frac{2}{\beta_t}S(\beta_t z) - \left(\frac{2}{\beta_t}\log 2 +  z \right)\right| \le \frac{1}{2} \beta_t z^2.
+\end{align}
+Then for our token-wise loss $\ell_t(\theta)$, we have
+\begin{align*}
+    \left| \ell_t(\theta) 
+    - \E_{(\bx,\by)\sim D}  \left[ \onec{t \le |\by|} \left( \frac{2}{\beta_t} \log 2 +  \Delta_t(\bx, \by_{<t}, y_t) \right)\right] \right|
+    &\le \frac{1}{2} \beta_t \E_{(\bx,\by)\sim D}  \onec{t \le |\by|} \Delta_t^2 (\bx, \by_{<t}, y_t) \\
+    & = O(\beta_t).
+\end{align*}
+Recall that $\Delta_t(\bx, \by_{<t}, y_t) := \log \pialigned\big(y_t \mid \bx, \by_{<t} \big) - \log \pi_{\theta}\big(y_t \mid \bx, \by_{<t} \big)$ as per Eqn~\ref{eqn:delta-term-in-loss}. We can thus have
+\begin{equation}
+\begin{aligned}
+    \ell_t(\theta) 
+    &- \E_{(\bx,\by)\sim D}  \left[ \onec{t \le |\by|} \left( \frac{2}{\beta_t} \log 2 +   \log \pialigned(y_t |  \bx, \by_{< t}) \right)\right] 
+     \\ &\qquad\qquad\qquad\qquad
+    = - \E_{(\bx,\by)\sim D}  \left[ \onec{t \le |\by|}      \log \pi_{\theta}(y_t |  \bx, \by_{< t}) \right] + O(\beta_t).
+\end{aligned}
+\end{equation}
+Noting that $C(\beta_t) := \E_{(\bx,\by)\sim D} \left[\onec{t \le |\by|} \left( \frac{2}{\beta_t} \log 2 + \log \pialigned(y_t \mid \bx, \by_{<t}) \right) \right]$, we can complete the proof.
+\end{proof}
+%We can thus write $\ell_t(\theta)$ as
+%\begin{align*}
+%    \ell_t(\theta) = 
+%    \E_{(\bx,\by)\sim D} \left[ \onec{t \le |\by|} \left( \frac{1}{\beta_t} \log 2 + \frac{1}{2} \Delta_t(\bx, \by_{<t}, y_t) \right)\right]
+%    + O(\beta_t)
+%\end{align*}
+%Replacing $\Delta_t(\bx, \by_{<t}, y_t)$ by its definition, we get the desired result.
+
+
+\subsubsection{Large $\beta_t$} 
+
+%{\color{red} I think this needs to be similarly stated in a more rigorous manner.}
+When $\beta_t$ is large, we have the following theorem showing that $\ell_t(\theta)$
+can be approximated by $\tilde{\ell}_t(\theta) := \E_{(\bx,\by)\sim D}  \left[ \onec{t \le |\by|} \max\{ \Delta_t(\bx, \by_{<t}, y_t), 0 \} \right]$.
+\begin{theorem}
+For a given $\theta$, as $\beta_t \to +\infty$, we have
+\begin{equation*}
+    \ell_t(\theta) = 2 \tilde{\ell}_t(\theta) + O(\beta_t^{-1}),
+\end{equation*}
+where 
+\begin{equation*}
+    \tilde{\ell}_t(\theta) := \E_{(\bx,\by)\sim D}  \left[ \onec{t \le |\by|} \max\{ \Delta_t(\bx, \by_{<t}, y_t), 0 \} \right].
+\end{equation*}
+\end{theorem}
+\begin{proof}
+    First, we note the following identity.
+    \begin{align}
+        S(z) = \log(1 + e^z) = \max\{z, 0\} + \log((1+e^z) e^{-\max\{z, 0\}})
+        = \max\{z, 0\} + \log(1 + e^{-|z|}).
+    \end{align}
+    This implies that
+    \begin{align}
+        \left|\frac{2}{\beta_t}S(\beta_t z) - 2 \cdot \max\{z, 0\}\right|
+            = \frac{2}{\beta_t} \log(1 + e^{-\beta_t |z|})
+            \le \frac{2}{\beta_t} e^{-\beta_t |z|}.
+    \end{align}
+    Then for our token-wise loss $\ell_t(\theta)$, we have
+    \begin{align}
+        \left| \ell_t(\theta) 
+        - 2 \cdot \E_{(\bx,\by)\sim D}  \left[ \onec{t \le |\by|} \max\{ \Delta_t(\bx, \by_{<t}, y_t), 0 \} \right]
+        \right|
+        \le 
+        \frac{1}{\beta_t} \E_{(\bx,\by)\sim D}  \left[ \onec{t \le |\by|} e^{-\beta_t |\Delta_t(\bx, \by_{<t}, y_t)|} \right]
+    \end{align}
+    Noting that the RHS is $O(\beta_t^{-1})$ completes the proof.
+\end{proof}
+Next, we show that $\tilde{\ell}_t(\theta)$ is minimized to $0$ if and only if $\pi_{\theta}(y_t \mid \bx, \by_{<t}) = \pialigned(y_t \mid \bx, \by_{<t})$.
+\begin{theorem} \label{thm:relu_loss_min}
+    The minimum value of $\tilde{\ell}_t(\theta)$ is $0$.
+    If $\Pr_{(\bx, \by) \sim D}[y_t = c \mid \bx, \by_{<t}] > 0$ for all $(\bx, \by)$ in the support of $D$ and all $c$ in the vocabulary,
+    then $\tilde{\ell}_t(\theta) = 0$ if and only if $\pi_{\theta}(y_t \mid \bx, \by_{<t}) = \pialigned(y_t \mid \bx, \by_{<t})$.
+\end{theorem}
+\begin{proof}
+    It is obvious that $\tilde{\ell}_t(\theta) \ge 0$, and $\tilde{\ell}_t(\theta) = 0$ can be attained when $\theta$ stays the same as the parameter for $\pialigned$. It is obvious that  $\pi_{\theta}(y_t \mid \bx, \by_{<t}) = \pialigned(y_t \mid \bx, \by_{<t})$
+    implies $\tilde{\ell}_t(\theta) = 0$.
+    Conversely, suppose $\tilde{\ell}_t(\theta) = 0$.
+    Then $\Delta_t(\bx, \by_{<t}, y_t) \le 0$ for all $(\bx, \by)$ in the support of $D$.
+    By definition of $\Delta_t(\bx, \by_{<t}, y_t)$, this implies $\pialigned(y_t \mid \bx, \by_{<t}) \le \pi_{\theta}(y_t \mid \bx, \by_{<t})$.
+    Summing over all $y_t$ in the vocabulary, we get $1 = \sum_{y_t} \pialigned(y_t \mid \bx, \by_{<t}) \le \sum_{y_t} \pi_{\theta}(y_t \mid \bx, \by_{<t}) = 1$.
+    So all the inequalities must be equalities, and we get $\pi_{\theta}(y_t \mid \bx, \by_{<t}) = \pialigned(y_t \mid \bx, \by_{<t})$.
+\end{proof}
+
+This corresponds to the intuition that large $\beta_t$ places emphasis on matching the generative distribution of fine-tuned model to the initial aligned model.
+
+%\subsection{Minimizers}
+%\label{appendix:loss_minimizers}
+%\kaifeng{TBA}
+
+
+
+\subsection{Gradients of The Constrained Fine-tuning Objective}
+\label{appendix:loss_gradients}
+
+%\xiangyu{I know it is also already in the main content, but I feel keeping it here is not bad for a complete view when readers read this appendix section. Also I find it helpful to refer readers to this subsection for a recap when I need to explain why a division of $1/\beta_t$ is in our loss function.}
+
+%$S(z) := -\log(\sigma(-z)), S'(z) = -\frac{1}{\sigma(-z)} \sigma'(-z) = -\frac{1}{\sigma(-z)} \cdot \sigma(-z) \cdot (1-\sigma(-z)) \cdot -1 = 1 - \sigma(-z) = \sigma(z)$ 
+
+The gradient of $\ell_t(\theta)$ on a data point $(\bx, \by)$ with $|\by| \ge t$ is derived as:
+\begin{align}
+    \nabla \left( \frac{2}{\beta_t} S(\beta_t \Delta_t(\bx, \by_{<t}, y_t)) \right)
+    &= 
+    2 S'(\beta_t \Delta_t(\bx, \by_{<t}, y_t)) (-\nabla \log \pi_{\theta}\big(y_t \mid \bx, \by_{<t})) \nonumber \\
+    &= 2  \sigma(\beta_t \Delta_t(\bx, \by_{<t}, y_t)) (-\nabla \log \pi_{\theta}\big(y_t \mid \bx, \by_{<t})).
+    %&  -  \sum_{t=1}^{|\by|} w_t \times \nabla \ \log \ \pi_{\theta}\big[y_t|\bx, y_1,...,y_{t-1}\big],\ w_t := \Bigg[1 - \sigma\Bigg( \beta \cdot \log \frac{\pi_{\theta}\big[y_t|\bx, y_1,...,y_{t-1}\big]}{\pi_{aligned}\big[y_t|\bx, y_1,...,y_{t-1}\big]}\Bigg)\Bigg]
+\end{align}
+%\ahmad{There is now repitition between the content here and the main paper.}
+
+Note that the gradient of the cross-entropy loss is $-\nabla \log \pi_{\theta}\big(y_t \mid \bx, \by_{<t}\big)$.
+Therefore, compared to vanilla cross-entropy loss, our fine-tuning objective essentially applies an additional adaptive weight $w_t := 2\cdot \sigma(\beta_t \Delta_t(\bx, \by_{<t}, y_t))$ for the token-wise gradient term of cross-entropy. The weight $w_t$ decreases as $\Delta_t(\bx, \by_{<t}, y_t) := \log \pialigned\big(y_t \mid \bx, \by_{<t} \big) - \log \pi_{\theta}\big(y_t \mid \bx, \by_{<t} \big)$ decreases.
+This difference in log probabilities essentially characterizes the deviation between the fine-tuned model $\pi_{\theta}$ and the initially aligned model $\pialigned$ at the token position $t$ (see also~\Cref{thm:relu_loss_min}).
+Taking together, we can see that the fine-tuning objective will adaptively diminish the weight of those token positions where the deviation of the distribution approaches a certain threshold (controlled by $\beta_t$), thereby constraining it from further deviation (by diminishing the gradient at this position). Note that, at the beginning of the fine-tuning when $\pi_\theta$ is initialized as $\pialigned$, the weight $w_t = 1$, and the gradient of the loss is equivalent to that of standard cross-entropy loss.%\footnote{This is also why we always multiply a constant factor $\frac{2}{\beta_t}$ to the loss term. With this constant factor, we make sure the gradient magnitude is consistent with the standard SFT (with cross-entropy loss) when the weight $w_t$ does not diminish.}
+
+
+
+\subsection{Interpreting Eqn~\ref{eqn:soft-sft-fine-tuning-loss} from A Reinforcement Learning Perspective}
+\label{appendix:loss-rl-perspective}
+
+
+%\begin{align*}
+%    \min_{\theta} \Bigg\{ \ \ \mathop{\mathbb E}_{(\bx,\by)\sim D} -  \sum_{t=1}^{|\by|} \frac{2}{\beta_t} \log\Bigg[\sigma \bigg( \beta_t \log \frac{\pi_{\theta}\big(y_t \mid \bx, \by_{<t} \big)}{\pialigned\big(y_t \mid \bx, \by_{<t} \big)}  \bigg)  \Bigg] \ \ \Bigg\},
+%\end{align*}
+
+We note that our loss function in Eqn~\ref{eqn:soft-sft-fine-tuning-loss} can also be interpreted from a reinforcement learning perspective if we \textbf{cast fine-tuning as a KL-constrained reinforcement learning problem} rather than a standard supervised fine-tuning problem. 
+Specifically, we can follow a similar trick as DPO~\cite{rafailov2023direct} to derive a unified loss, but taking a different approach to reward modeling. 
+We, instead, formulate our problem setting like \citet{mudgal2024controlled}, where we optimize at the token level (where tokens are actions), rather than DPO which uses a sequence-level optimization (corresponding more to a bandit setting where entire sequences are actions).
+
+
+\subsubsection{A Token-wise Reinforcement Learning~(RL) Formulation.}
+\label{appendix-subsubsection:token-wise-rl-formulation-basics}
+
+We first introduce the following token-wise RL formulation for LM alignment, which is adapted from \citet{mudgal2024controlled}. In Appendix~\ref{appendix-subsubsec:cast-custom-fine-tuning-to-RL}, we show how a fine-tuning task can be cast into this token-wise RL problem, and Eqn~\ref{eqn:soft-sft-fine-tuning-loss} is essentially a surrogate learning objective of this RL problem.
+
+% \peter{I'm experimenting with some notation changes here, still in flux, and I might revert to the previous version. }
+
+
+\textbf{Reward Function.} For a pair of an input and a model response $(\bx, \by)$, we cast custom fine-tuning as a problem of further optimizing an already aligned model for a new custom reward function $r([\bx, \by])$. Here we use $[\bx, \by]$ to denote a concatenation of the two sequences and we use this concatenation to denote a state, and the reward function is defined on this state. Following \citet{mudgal2024controlled}, we can decompose it to a token-wise reward $R([\bx, \by_{< t}])$ defined on the intermediate state $[\bx, \by_{< t}]$:
+\begin{align}
+    & R([\bx, \by_{< t}]) = 
+    \begin{cases}
+        0 , & y_{t-1} \ne EOS\\
+        r([\bx, \by_{< t}]) , & y_{t-1} = EOS 
+    \end{cases},
+\end{align}
+where $EOS$ is the end of the sequence token. The reward is nonzero only if the decoding is complete. We note that, by $r([\bx, \by_{<t}])$ and $R([\bx, \by_{<t}])$, we mean the function $r$ and $R$ are applied on the concatenation of $\bx$ and $\by_{<t}$. Similarly, in the following, we will also use notations such as $R([\bx, \by_{<t}, \bz_{<\tau}])$ and $R([\bx, \by_{<t}, z])$ to denote that we apply $R$ on the concatenation between $[\bx, \by_{<t}]$ and a followup sequence $\bz_{<\tau}$ or just a single token $z$. These concatenations all represent some states of the generation.
+
+\textbf{Value Function.}
+%\peter{The notation here is a little confusing. $V^*$ is typically the optimal value function. Is that what the value is supposed to be here? Seems like it shouldn't be.} \ahmad{True, i think it might be better to drop it but first we probably need to define the notation clearly.}
+At an intermediate state $[\bx, \by_{< t}]$, the value function of a policy $\pi$ defined on this reward function can be written as:
+\begin{align}
+    & V_{\pi}([\bx, \by_{< t}]) := \mathop{\mathbb E}_{\bm{z} \sim \pi( \cdot | \bx, \by_{< t})} \Bigg\{ \sum_{\tau \ge 1} R\Big([\bx, \by_{< t}, \bm{z}_{< \tau}]\Big)\Bigg\}
+\end{align}
+Here $\bz$ is a sequence, and $\bz_{< \tau}$ is empty when $\tau = 1$ as we index tokens in a sequence starting from the index number 1. Also, in the following formulations, we will have multiple different notations $\pi_{\theta}$, $\pialigned$, $\pi^*$ to denote different policies instances, so we will use $V_{\pi_\theta}$, $V_{\pialigned}$, $V_{\pi^*}$ to differently denote their value functions respectively. 
+
+
+\peter{It's a little unusual to define the first part of the advantage as another V, since the first part is supposed to be action dependent (which a value function shouldn't be, though we're in a bit of an odd setting here).} \ahmad{That it true, but in this very simple setting of LLMs, the action is just the next token, so the $q$ function is just simply value of the state with next token appended. Perhaps we can write a couple of sentences to that effect}
+\xiangyu{I think it is probably fine to keep it. Basically, the simplicity of our setting is that the reward is only obtained at the terminal state.}
+\xiangyu{Also, I think Eqn-27 basically holds independently for each t. That's why we can define the advantage token-wise.}
+\ahmad{I wrote a couple of sentences after (25)}
+
+\textbf{Advantage Function.} 
+When the custom fine-tuning is modeled by the reward function $R$, we define an expected advantage function of a fine-tuned model $\pi_\theta$ w.r.t. the initially aligned model $\pialigned$:
+\begin{equation}
+   \hat{A}_{\pi_{\theta}}([\bx, \by_{< t}]) := \mathop{\mathbb{E}}_{z \sim \pi_{\theta}(\cdot | \bx, \by_{< t})} \Bigg\{V_{\pialigned}\Big([\bx, \by_{< t}, z]\Big) - V_{\pialigned}\Big([\bx, \by_{< t}]\Big)\Bigg\},
+\end{equation}
+
+Here the advantage function is defined for non-terminal states $[\bx, \by_{< t}]$ where $y_{t-1}$ is not the ending token $EOS$, and $z$ is a single token sampled by $z \sim \pi_\theta(\cdot | \bx, \by_{< t})$. Note that the left-hand term could also be viewed as a $Q$-function with $z$ being the action. In other words, a language model can be viewed as a fully observable Markov decision process (MDP) with state represented by the concatenation of the prompt and the partially decoded response tokens so far and action represented by the next token that is to be decoded. 
+
+
+
+% \peter{This is the previous version}
+
+% \textbf{Reward Function.} For an input and a model response pair $(\bx, \by)$, fine-tuning can be viewed as further optimizing an already aligned model for a new custom reward function $r(\bx, \by, \bz)$, where $\bx$ is a user contributed input (e.g., prompt), $\by$ is a response, or partial response, from any other source than the policy (e.g., fine-tuning data), and $\bz_{t:t+\tau}$ are tokens drawn from a policy ($\bz = \{z_t, \cdots, z_{t+\tau} \} \sim \pi$).
+% The token-wise reward function $R(\{\bx, \by_{< t}, \bz_{t:t+\tau}\})$ can then be defined as:
+% % \begin{align}
+% %     & R(\bx, \by_{< t}) = 
+% %     \begin{cases}
+% %         0 , & y_{t-1} \ne EOS\\
+% %         r(\bx, \by_{< t}) , & y_{t-1} = EOS 
+% %     \end{cases},
+% % \end{align}
+% \begin{align}
+%     & R(\{\bx, \by_{< t}, \bz_{t:t+\tau}\}) = 
+%     \begin{cases}
+%         0 , & z_{t+\tau} \ne EOS\\
+%         r(\{\bx, \by_{< t}, \bz_{t:t+\tau}\}) , & z_{t+\tau} = EOS 
+%     \end{cases},
+% \end{align}
+
+% where $EOS$ is the end of the sequence token, $z_{t+\tau}$ is the final token (action) selected by the LLM in a series of $\tau$ actions. The reward is nonzero only if the decoding is complete.
+% % We note that, by $r(\bx, \by_{<t}, \bz_{t:t+\tau})$ and $R(\bx, \by_{<t}, \bz_{t:t+\tau})$, we mean the function $r$ and $R$ are applied on the concatenation of $\bx$ and $\by_{<t}$. Roughly, $z$ can also be thought of as $y_t$, but we keep notation closer to the RL setting with a separate single action, but $(\bx, \by_{< t})$ maps to the state.
+% % Similarly, in the following, we will also use notations such as $R(\bx, \by_{<t}, \bz_{<\tau})$ and $R(\bx, \by_{<t}, z)$ to denote that we apply $R$ on the concatenation between $\bx, \by_{<t}$ and a followup sequence $\bz_{<\tau}$ or just a single token $z$.
+
+% \textbf{Value Function.}
+% %\peter{The notation here is a little confusing. $V^*$ is typically the optimal value function. Is that what the value is supposed to be here? Seems like it shouldn't be.} \ahmad{True, i think it might be better to drop it but first we probably need to define the notation clearly.}
+% The value function of a policy $\pi$ defined on this reward function can be written as:
+% \begin{align}
+%     & V_{\pi}(\{\bx, \by_{< t}\}) := {\mathbb E}_\pi
+%     % {\bm{z} \sim \pi( \cdot | \bx, \by_{< t})} 
+%     \Bigg\{ \sum_{\tau \ge 0} R\Big(\{\bx, \by_{< t}, \bz_{t:t+\tau} \}\Big)\Bigg\}
+% \end{align}
+% % Here $\bz$ is a sequence, and $\bz_{< \tau}$ is empty when $\tau = 1$ as we index tokens in a sequence starting from the index number 1. 
+% That is, as new tokens $z_{t+\tau}$ are drawn and appended to the context, the value is a sum of future rewards. from those actions.
+% In the following, we will denote $\pi_{\theta}$, $\pialigned$, $\pi^*$ as the policy of the fine-tuned model being learned, the original aligned model, and the optimal policy, respectively. Then $V_{\pi_\theta}$, $V_{\pialigned}$, $V_{\pi^*}$ to correspond to their respective value functions. Note, in some cases the value function and the action value function are identical in the LLM setting. As such, we will sometimes denote $V_{\pi}(\bx, \by_{< t}, z_t)$ as the \textit{value} (not action-value) function where $z_t$ is treated as part of the current state. 
+% % To denote when $z_t$ is being treated as part of the state, we 
+
+% % In that case, the value is provided by  $V_{\pi}(\bx, \by_{< t}, z_t) := {\mathbb E}_\pi
+%     % {\bm{z} \sim \pi( \cdot | \bx, \by_{< t})} 
+%     % \Bigg\{ \sum_{\tau \ge 1} R\Big(\bx, \by_{< t}, \bz_{t:t+\tau}\Big)\Bigg\}$
+
+% % \peter{It's a little unusual to define the first part of the advantage as another V, since the first part is supposed to be action dependent (which a value function shouldn't be, though we're in a bit of an odd setting here).} \ahmad{That it true, but in this very simple setting of LLMs, the action is just the next token, so the $q$ function is just simply value of the state with next token appended. Perhaps we can write a couple of sentences to that effect}
+% % \xiangyu{I think it is probably fine to keep it. Basically, the simplicity of our setting is that the reward is only obtained at the terminal state.}
+% % \xiangyu{Also, I think Eqn-27 basically holds independently for each t. That's why we can define the advantage token-wise.}
+% % \ahmad{I wrote a couple of sentences after (25)}
+
+% \textbf{Advantage Function.} 
+% Recall that an advantage function in RL, is $A^\pi(s,a) = Q^\pi (s,a) - b(s)$ where $b(s)$ is typically the value function $b(s) = V^\pi(s)$. We can instead begin to develop the fine-tuning objective in an RL framework by defining the advantage function of $\pi_\theta$ w.r.t. the initially aligned model $\pialigned$:
+% \begin{equation}
+%     A_{\pi_{\theta}}(\bx, \by_{< t}, z_t) := R(\bx, \by_{<t}, z_t) + V_{\pi_\theta}\Big(\bx, \by_{< t},z_t
+%     \Big) - V_{\pialigned}\Big(\bx, \by_{< t}\Big).
+% \end{equation}
+% Here the advantage function is defined for non-terminal states $(\bx, \by_{< t})$ where $y_{t-1}$ is not the ending token $EOS$. We use the aligned policy as the baseline, instead of the traditional baseline of expected value.
+% % Note that the left-hand term could also be viewed as a $Q$-function with $z$ being the action. In other words, a language model can be viewed as a fully observable Markov decision process (MDP) with state represented by the concatenation of the prompt and the partially decoded response tokens so far and action represented by the next token that is to be decoded. 
+% In expectation over the policy this term then becomes:
+% \begin{equation}
+%     \tilde{A}_{\pi_{\theta}}(\bx, \by_{< t}, z_t) := \mathbb{E}_{\pi_\theta} \Big[  R(\bx, \by_{<t}, z_t) + V_{\pi_\theta}\Big(\bx, \by_{< t}, z_t\Big) - V_{\pialigned}\Big(\bx, \by_{< t}\Big) \Big]
+% \end{equation}
+
+% This can be transformed into:
+% \begin{equation}
+%     \tilde{A}_{\pi_{\theta}}(\bx, \by_{< t}) := V_{\pi_\theta}\Big(\bx, \by_{< t}\Big) - V_{\pialigned}\Big(\bx, \by_{< t}\Big) 
+% \end{equation}
+
+\textbf{The Reinforcement Learning Objective.} Following \citet{mudgal2024controlled}, we adopt a token-wise RL learning objective:
+\begin{align}
+    & \max_{\theta} \ \ \mathop{\mathbb E}_{(\bx, \by) \sim D} \  \Bigg\{ \sum_{t\ge 1} \Big[ \tilde{A}_{\pi_{\theta}}([\bx, \by_{< t}]) - \beta_t \cdot \KL\big(\pi_{\theta}(\,\cdot\, | \bx,  \by_{< t})~\big\|~\pialigned(\,\cdot\, | \bx,  \by_{< t}) \big) \Big] \Bigg\},
+\label{eqn:tokenwise-rl-objective}
+\end{align}
+where the advantage function is optimized at each token position $t$ with a token-wise KL regularizer term $\beta_t \cdot \KL\big(\pi_{\theta}(\,\cdot\, | \bx,  \by_{< t})~\big\|~\pialigned(\,\cdot\, | \bx,  \by_{< t}) \big)$ applied for each token position. The strength of regularization at each token position is controlled by $\beta_t$.
+
+
+\textbf{Closed Form of The Optimal Solution $\pi^*$.} Omitting some intermediate steps for brevity, by Theorem 2.1 of \citet{mudgal2024controlled}, the optimal policy solution $\pi^*$ of Eqn~\ref{eqn:tokenwise-rl-objective} is:
+\begin{align}
+    & \pi^*(z | \bx, \by_{< t}) = \frac{1}{Z(\bx, \by_{<t})}  \pialigned (z | \bx, \by_{<t}) \cdot e^{V_{\pi^*}([\bx, \by_{<t}, z]) / \beta_t},
+\end{align}
+where $Z(\bx, \by_{<t})$ is the partition function, $V_{\pi^*}$ is the value function of this optimal policy. We note that this conveniently allows us to re-arrange terms to represent the optimal value function---similar to the steps taken during the derivation of DPO~\cite{rafailov2023direct}:
+\begin{align}
+    & V_{\pi^*}([\bx, \by_{<t}]) = \beta_t \cdot \log \frac{\pi^*(z|\bx, \by_{<t})}{\pialigned(z|\bx, \by_{<t})} + \beta_t \cdot \log Z(\bx, \by_{<t})
+\label{eqn:token-wise-optimal-solution}
+\end{align}
+
+
+
+
+\subsubsection{Casting Fine-tuning into a Reinforcement Learning Objective}
+\label{appendix-subsubsec:cast-custom-fine-tuning-to-RL}
+
+In the setting of custom fine-tuning we consider in this work, the dataset $D$ is in the form of $D := \{\bx, \by\}$ with only inputs and example outputs, without preference pairs. 
+% Therefore, the standard SFT objective~(Eqn~\ref{eqn:sft}) is often the default choice for such custom fine-tuning. However, it is not the only way to learn from the dataset $D$. 
+Now, we show an alternative to the standard SFT objective~(Eqn~\ref{eqn:sft}) for learning from this dataset: casting the optimization as a KL-regularized RL objective in Appendix~\ref{appendix-subsubsection:token-wise-rl-formulation-basics}. 
+We will show how our token-wise constrained fine-tuning objective in Eqn~\ref{eqn:soft-sft-fine-tuning-loss} can essentially be derived from this token-wise KL-regularized RL problem!
+
+% \textbf{A Token-wise Reward Modeling to Encode Custom Fine-tuning.} 
+% PH: it's not really reward modeling, is it? You can't have a reward that's modeling the value function.
+Intuitively, fine-tuning $\pialigned$ further on custom data points $(\bx, \by)$ implicitly assumes that this fine-tuning data is as preferable or more preferable than whatever the model would currently output.
+To represent this implied preference that the custom example response $\by$ is better than the current responses from $\pialigned$, we can effectively leverage existing preference learning methods.
+Recall that, in preference optimization (with both positive and negative examples), the Bradley-Terry model~\cite{bradley1952rank} is used as a model of the underlying reward function. In our setup, we don't have pair-wise preference data, and we only have inputs and positive examples. However, we can define a boolean  $T([\bx, \by_{<t}], y_t)$ to encode the preference: in the fine-tuning task, $y_t$ is a preferable token output following $[\bx, \by_{<t}]$ compared to the responses from the initial aligned model $\pialigned$. So, given an expected random draw from the aligned policy and the draw from the fine-tuned optimal policy, we can define:
+% Then, leveraging Eqn~\ref{eqn:token-wise-optimal-solution}:
+%we can therefore further define the optimal value function (reward) to reflect this custom preference: %\ahmad{might be good to ground this for a random draw from $\pi_{aligned}$ to explain what it means; basically we are saying the lilelihood that $y_t$ is preferable over a random draw, right?}
+\begin{align}
+    & \mathop{\mathbb P}\Big(T([\bx, \by_{<t}], y_t)\Big) = \sigma\Bigg( V_{\pi^*}([\bx, \by_{<t}, y_t]) - 
+ \mathop{\mathbb E}_{z \sim \pialigned(\cdot |\bx, \by_{<t} ) } V_{\pi^*}([\bx, \by_{<t}, z])\Bigg)
+\label{eqn:theoretical-token-wise-reward-model}
+\end{align}
+
+Intuitively, this means that---conditioned on the context $[\bx, \by_{\le t}]$---if there is a
+continuation token $y_t$ that is higher than the average reward of actions
+sampled from the initial aligned model $\pialigned$, it is likely to be an improved or preferred choice in the custom fine-tuning task. 
+The higher the margin $V_{\pi^*}([\bx, \by_{<t}, y_t]) - 
+ \mathop{\mathbb E}_{z \sim \pialigned(\cdot |\bx, \by_{<t} ) } V_{\pi^*}([\bx, \by_{<t}, z])$ is, the more likely it is an
+improvement. 
+% Another view of this would be a Bradley-Terry preference function based on value functions, as opposed to reward functions.
+
+% Compared with traditional RLHF and DPO settings, this reward modeling is defined to replace the standard Bradley-Terry model~\cite{bradley1952rank} that is defiend on (positive, negative) preference data pairs.
+
+
+
+%on the based aligned model in a reward model first and
+%optimize the model to maximize the reward.
+
+
+
+% \textbf{Reinforcement Learning.} 
+With this function in mind, combined with Eqn~\ref{eqn:token-wise-optimal-solution}, we can leverage a similar derivation to DPO~\cite{rafailov2023direct} to arrive at a constrained fine-tuning objective that is only dependent on the current policy, but is regularized by the original aligned policy. We plug in the closed form of the optimal value function~(Eqn~\ref{eqn:token-wise-optimal-solution}) into the modeling in Eqn~\ref{eqn:theoretical-token-wise-reward-model}, obtaining:
+\begin{align}
+    \mathop{\mathbb P}\Big(T([\bx, \by_{<t}], y_t)\Big) &= \sigma \Bigg( \beta_t  \log \frac{\pi^*(y_t|\bx, \by_{< t})}{\pialigned(y_t|\bx, \by_{<t})} - \beta_t \hspace{-.03in}\mathop{\mathbb E}_{z \sim \pialigned(\cdot |\bx, \by_{<t} ) } \hspace{-.03in} \log \frac{\pi^*(z|\bx, \by_{<t})}{\pialigned(z|\bx, \by_{<t})} \Bigg) \nonumber \\
+    & = \sigma \Bigg( \beta_t  \log \frac{\pi^*(y_t|\bx, \by_{< t})}{\pialigned(y_t|\bx, \by_{<t})} + \beta_t \KL\Big(\pi^*(\cdot | \bx, \by_{<t}) \big\| \pialigned(\cdot | \bx, \by_{<t}) \Big) \Bigg).
+\end{align}
+Thus, we don't need to explicitly learn the value function, instead it is implicitly encoded by the policy. Then the optimization objective can become:
+% \peter{Wait, this whole thing was saying it's not MLE, but now it is? I'm going to comment this part out.}
+% Note that, the custom fine-tuning dataset $D$ provides us the learning signals for learning the optimal policy $\pi^*$ here that corresponds to the optimal reward/value $V_{\pi^*}$. \textbf{Specifically, the custom fine-tuning on a custom dataset $D$ comprising of data pairs $(\bx, \by)$ can now be casted into a maximal likelihood estimation of $\mathop{\mathbb P_{\theta}}\Big(T(\bx, \by_{<t}, y_t)\Big)$ on $D$:}
+
+
+\begin{align}
+    & \max_{\theta} \ \  \mathop{\mathbb E}_{(\bx, \by) \sim D} \Bigg\{ \sum_{t \ge 1} \frac{1}{\beta_t}\log \mathop{\mathbb P_{\theta}}\Big(T([\bx, \by_{<t}], y_t)\Big) \Bigg\} \label{eqn:token-wise-reward-modeling-mle-objective},
+\end{align}
+where: 
+\begin{align}
+    & \mathop{\mathbb P_{\theta}}\Big(T([\bx, \by_{<t}], y_t)\Big)  := \sigma \Bigg( \hspace{-.03in}\beta_t  \log \frac{\pi_{\theta}(y_t|\bx, \by_{< t})}{\pialigned(y_t|\bx, \by_{<t})} + \beta_t  \KL\Big(\pi^*(\cdot | \bx, \by_{<t}) \big\| \pialigned(\cdot | \bx, \by_{<t}) \Big) \hspace{-.03in}\Bigg),
+    \label{eqn:inverse-rl-theta-objective}
+\end{align}
+and the division of $\beta_t$ in Eqn~\ref{eqn:token-wise-reward-modeling-mle-objective} normalizes the gradient norm at each position $t$ as we will later see in Eqn~\ref{eqn:final-consistency-result} and also clarified in Section~\ref{subsec:token-wise-objective-intro} (and Appendix~\ref{appendix:loss_gradients}).
+
+% Here, the 
+% PH: I really don't follow what this means. Just commenting it out. What is the ``taste''?
+
+% implication of the objective in Eqn~\ref{eqn:token-wise-reward-modeling-mle-objective} is that instead of directly optimizing a maximal likelihood estimator on the custom fine-tuning dataset like in Eqn~\ref{eqn:sft}, we encode the ``taste''
+% of the desired improvement represented by the custom fine-tuning dataset $D$ into the reward function $r$ and the value function $V$ defined on it. 
+% Then, the policy $\pi_\theta$ is learned by optimizing the policy for the reward model~(defined by Eqn~\ref{eqn:theoretical-token-wise-reward-model}) instead. This reward model is further implicitly learned via the inverse reinforcement learning tricks~(i.e., Eqn~\ref{eqn:token-wise-optimal-solution}, \ref{eqn:inverse-rl-theta-objective}), the same as DPO.
+
+% In this case, the optimization problem is the equivalent of optimizing for the optimality gap between the optimal policy's actions in the dataset and the off-policy expected value of 
+
+Note that $\beta_t \cdot \KL\Big(\pi^*(\cdot | \bx, \by_{<t}) \big\| \pialigned(\cdot | \bx, \by_{<t}) \Big)\ge 0$ is a non-negative constant, we have: %\ahmad{I will also think about the narrative here}
+\begin{align}
+    & \mathop{\mathbb P_{\theta}}\Big(T([\bx, \by_{<t}], y_t)\Big) \ge \sigma \Bigg( \beta_t \cdot \log \frac{\pi_{\theta}(y_t|\bx, \by_{< t})}{\pialigned(y_t|\bx, \by_{<t})} \Bigg)
+\end{align}
+
+
+
+So, the objective in Eqn~\ref{eqn:token-wise-reward-modeling-mle-objective} can be replaced with a lower bound surrogate objective $L_{\theta}$:
+\begin{align}
+    & \mathop{\mathbb E}_{(\bx, \by) \sim D} \Bigg\{ \sum_{t \ge 1} \frac{1}{\beta_t}  \log \mathop{\mathbb P_{\theta}}\Big(T([\bx, \by_{<t}], y_t)\Big) \Bigg\} \ge L_{\theta} 
+    \label{eqn:final-consistency-result}
+\end{align}
+where 
+\begin{equation*}
+    L_{\theta} := \mathop{\mathbb E}_{(\bx, \by) \sim D} \Bigg\{ \sum_{t \ge 1} \frac{1}{\beta_t} \cdot \log \ \sigma \Bigg( \beta_t \cdot \log \frac{\pi_{\theta}(y_t|\bx, \by_{< t})}{\pialigned(y_t|\bx, \by_{<t})} \Bigg) \Bigg\}.
+\end{equation*}
+
+Eqn~\ref{eqn:soft-sft-fine-tuning-loss} is then equivalent to $\min_{\theta} -L_\theta \iff  \max_{\theta}  L_{\theta}$. So, optimizing the objective Eqn~\ref{eqn:soft-sft-fine-tuning-loss} is essentially to maximize the lower-bound of the reinforcement learning objective in Eqn~\ref{eqn:token-wise-reward-modeling-mle-objective}.
+
+% With all of the derivation, the intuition here is that this approximates a KL-regularized reinforcement objective that looks for the 

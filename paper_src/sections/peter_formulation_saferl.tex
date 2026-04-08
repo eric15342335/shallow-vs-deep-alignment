@@ -1,0 +1,24 @@
+% \peter{Below is a very light sketch of what I'm thinking, feel free to modify or remove.}
+
+% There are several ways to cast this issue.
+
+% \subsection{Safe RL}
+
+% The first
+
+% \subsection{Options}
+
+% One variation would formulate this in the options framework. In the options framework there is an options with an initiation set $\matchcal{I} \subseteq \mathcal{S}$, a policy option $\pi_\omega$, and a termination function $\beta_\omega$. Then there is a policy over options $\pi_\Omega$. In the context of language models, we can consider that there may be options \textit{implicitly} encoded in the model. 
+% Consider if there exist two implicit policy options $\pi_\omega^{safe}$ and $\pi_\omega^{unsafe}$. 
+% The safety shortcut simply learns to shift the first $K$ tokens to ensure that the policy over options $\pi_{\Omega}$ selects the safe option rather than the unsafe one.
+% To illustrate this,
+
+% % If all of the safety data begins with a particular prefix (e.g., ``I'm sorry I cannot.''). In some ways, this creates a bottleneck transition state in a Markov Chain. 
+
+
+Assume a causal language modeling loss for some prompt $x$ and outputs tokens $y = y_0, \cdots, \y_K$, for a length $K$ response and a batch of $N$.
+
+\begin{equation}
+    \mathcal{L} = \frac{1}{N} \sum_{b=0}^N \log \pi_\theta (y | x) 
+\end{equation}
+

@@ -1,0 +1,117 @@
+
+
+% \vspace{-em}
+\vspace{-0.2em}
+\subsection{Preliminaries}
+\label{subsec:preliminaries}
+\vspace{-0.2em}
+
+\textbf{Notation.} We use $\pi_{\theta}$ to denote a language model parameterized by weights $\theta$. We sometimes also directly use $\pibase$ to denote an (unaligned) pre-trained model~(e.g., Llama-2-7B, Gemma-7B) to contrast its aligned counterpart $\pialigned$~(e.g., Llama-2-7B-Chat, Gemma-7B-IT)~\citep{touvron2023llama-2,team2024gemma}. Given an input $\bx$, the model's output is modeled by $\pi_{\theta}(\,\cdot\, | \bx )$. We use $\by \sim \pi_{\theta}(\,\cdot\, | \bx )$ to denote the sampling of output $\by$. %, and $\by = G\{\pi_{\theta}[\cdot | T(\bx) ]\}$ to denote the deterministic greedy decoding. 
+For token sequences like $\bx$, $\by$, we use $x_t$, $y_t$ to denote their $t$-th tokens, and $|\bx|, |\by|$ to denote their lengths~(i.e., number of tokens). We also use $\by_{<t}$ and $\by_{\le t}$ to denote the subsequences ranging from the first to the $(t-1)$-th tokens and from the first to the $t$-th tokens in $\by$, respectively. Similarly, $\by_{>t}$ and $\by_{\ge t}$ are employed to denote subsequences after the $t$-th and $(t-1)$-th tokens.
+
+
+% \textbf{Prefilling.} Given an input $\bx$, the standard workflow of a model is to sequentially decode its output starting from $\pi_{\theta}(\,\cdot\, | \bx )$. We consider a counterfactual intervention on this workflow: \textit{what if the first L output tokens are ${\bs} := \{{s}_1, ..., {s}_L\}$}? Here, ${\bs}$ can be some counterfactuals that will actually not be generated in a standard workflow, according to $\pi_{\theta}(\,\cdot\, | \bx )$. This intervention is denoted by $\pi_{\theta}(\,\cdot\, | \bx, {\bs})$, through which we can examine the subsequent output tokens following the counterfactual prefix ${\bs}$.
+
+%\textbf{Poor Durability of Safety Alignment against Downstream Fine-tuning.} \peter{I think we can pretty much cut most of this paragraph down to a few sentences (if not entirely)} In current deployments, a prominent vulnerability problem of the safety alignment is its poor durability when the models are subject to follow-up fine-tuning. Notably, recent studies~\cite{qi2023fine,zhan2023removing} have demonstrated the feasibility of fine-tuning attacks, wherein a malicious actor can undo the safety alignment of a well-aligned LLM by simply fine-tuning it on a few harmful data points at a negligible cost. Furthermore, \citet{qi2023fine} noted that fine-tuning an aligned LLM on even benign downstream datasets might inadvertently result in safety regression. The poor durability of safety alignment against fine-tuning now emerges as a fundamental challenge in AI safety. It directly questions whether it is even possible to keep open-source models safe from malicious misuse, given that anyone can download these models and fine-tune away their safety alignment. Besides, it also introduces a \textit{safety-customizability dilemma} for closed-source models. Specifically, the proprietors of leading closed-source models have a substantial incentive to enhance their models' applicability by making them customizable via fine-tuning.  For instance, OpenAI has made custom fine-tuning of GPT-3.5 and GPT-4 available through public APIs~\cite{openaiFinetune}. However, such customizability also exposes these models to the same exploit of fine-tuning attacks. The issue of fine-tuning safety has recently become a primary driving force behind legislative efforts to restrict the dissemination of open-weights models. Reference [INSERT CITATION FOR SB1047] places the responsibility for ensuring that models cannot be adapted for harmful purposes on the original model's developer. This prevents organizations like Meta from evading the accountability for downstream developers' actions concerning their models. SB1047 and analogous bills emphasize that ensuring the durability of safety alignment against downstream fine-tuning is not only an academic pursuit but a critical challenge that must be addressed before any large organization permits the adaptation of frontier models.
+
+%For safety notion, we use $J(\cdot) \in \{\text{True, False}\}$ as an oracle function that judges whether a string contains harmful content.
+
+
+
+
+
+
+
+\textbf{Safety Evaluation and The Metrics.} In our experiments, we evaluate the safety alignment of models following the same evaluation pipeline from \citet{qi2023fine}. Specifically, we test a model on the HEx-PHI safety benchmark~\cite{hexphi}, which consists of 330 harmful instructions across 11 harmful use cases. Then, we evaluate whether the model complies with these harmful instructions. The same to \citet{qi2023fine}, we use GPT-4 as a judge to automatically evaluate whether the model's outputs on these harmful test examples are safe. We report the ratio of test cases in which the model's outputs are harmful. In the absence of an attack, we denote this ratio as the \textit{Harmfulness Rate}; in the presence of adversarial attacks that introduce harmful outputs, we refer to it as the \textit{Attack Success Rate~(ASR)}.
+%We use \textit{Harmfulness Rate} to denote this ratio when there is not attack, and Attack Success Rate~(ASR) for situations where adversarial attacks exist to introduce the harmful outputs.
+
+
+
+ 
+
+%Nonetheless, the safety afforded by current alignment approaches is weak. It has been demonstrated that an aligned model's capacity to reject harmful inputs can be easily circumvented through adversarially optimized inputs~\cite{qi2023visual,carlini2023aligned,zou2023representation,chao2023jailbreaking,andriushchenko2024jailbreaking} or negated via mere a few gradient steps of fine-tuning~\cite{qi2023fine,zhan2023removing}. In this paper, we aim to investigate the underlying causes.
+
+%In this paper, we present a perspective to account for such fragility.  %Therefore, currently, an imperative research agenda is to understand why the current safety alignment is so fragile. Such understanding holds the potential to inspire actionable approaches to build more robust safety alignment and protect it from being compromised.
+
+
+%Therefore, there is now a growing perception that \textbf{the current safety alignment is "shallow"} --- it does not genuinely eliminate the models' harmful behaviors; rather, such behaviors are only shallowly concealed beneath an ostensibly safe exterior. 
+
+
+%Given these failure modes of the current safety alignment, it is intuitive to infer that the alignment does not genuinely eliminate the models' harmful behaviors --- instead, such behaviors are only shallowly concealed beneath an ostensibly safe exterior. 
+
+
+
+%recent evidence suggests that the safety afforded by such alignment approaches is very much superficial. Empirical 
+%This level of safety is deemed disappointingly shallow, as the latent harmfulness can be so easily brought back to the surface.
+
+
+%By distilling such a notion, we aim to provide a principled perspective for diagnosing and illustrating some fundamental limitations of the current safety alignment, while also inspiring actionable approaches to improve it as well as securing it from being compromised.
+
+
+
+
+
+
+
+
+%Such a notion holds the promise to aid in more formally diagnosing and illustrating some fundamental limitations of the current safety alignment while also inspiring actionable approaches to strengthen it and safeguard it from being compromised.
+
+%provide a principled conceptual model to examine and account for this perception of "shallowness" associated with current safety alignment.
+
+%\textbf{Token Bias.}
+
+
+%\textbf{Context-Ignorant Refusal Shortcut.}
+
+
+%\textbf{Safety Depth.}
+
+
+
+%We posit that such a notion holds the potential to aid in more formally diagnosing and illustrating some fundamental limitations of the current safety alignment, while also inspiring actionable approaches to strengthen it and safeguard it from being compromised.
+
+%We present such a notion in Section~\ref{sec:shallow_alignment_notion}, 
+
+
+
+
+
+
+
+
+%In particular, we formally define the notion of "depth" of an LLM's safety as follows:
+%\begin{definition} \textbf{Safety Depth: $d(H, \theta, T)$.}
+    
+%\end{definition}
+
+%We draw upon a key observation that \textbf{the first few tokens of a language model's response hold a considerably more significant role in the model's safety behaviors than the remaining tokens.} In natural language, answering a harmful question with an affirmative prefix is considerably more likely to generate a harmful fulfillment than using a refusal prefix. This tendency stems from the strong linguistic priors inherent in the language. Thus, the safety of a model's overall response can already be primarily determined by whether its initial tokens are affirmative or refusal. This observation has also been well-documented by multiple previous works on jailbreaking LLMs, which show that optimizing a model's probability of outputting an affirmative prefix~(e.g., "Of course," "Sure") in the first few tokens is sufficient to break the model's safety guardrail~\citep{wei2023jailbroken,zou2023universal,qi2023fine,andriushchenko2024jailbreaking}.
+
+
+
+
+
+
+%In natural language, 
+
+
+
+
+
+
+
+
+
+
+
+%has recently been shown to be very much superficial. Adversarially optimized inputs can easily 
+
+%\citet{qi2023visual,carlini2023aligned,zou2023universal} demonstrate that the safety alignment can be easily jailbroken via adversarially optimized inputs. \citet{qi2023fine} show that the safety alignment can be largely removed via only a few gradient steps on explicitly harmful data, and even benign fine-tuning on normal data can lead to safety regress. \citet{huang2023catastrophic} find that by simply manipulating the decoding configurations, random sampling of output generations can already result in harmful generations... \textbf{But why is the safety alignment in current LLMs so superficial?} 
+
+%In Section~\ref{sec:shallow_alignment}, we show that this superficiality can be largely explained by the shallow depth of the safety alignment's impacts on the decoding tree of LLMs. In Section~\ref{sec:safety_imporvement}, we discuss how the presented analysis offers fundamental insights into advancing Large Language Models (LLMs) safety.
+
+
+
+
+
+
+

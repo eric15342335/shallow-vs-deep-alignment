@@ -1,0 +1,22 @@
+\section{Conclusion}
+\label{sec:conclusion}
+
+Our work identifies a shortcut that current safety alignment strategies appear to exploit: that alignment only needs to change the generative distribution of the first few tokens. We show that this may be a key component of many downstream vulnerabilities. We then provide two initial strategies to address this: (1) a data augmentation approach that can increase depth of alignment; (2) a constrained optimization objective that can help mitigate finetuning attacks by constraining updates on initial tokens. Future work can explore additional approaches grounded in control theory and safe reinforcement learning. 
+The methods we describe here may not be a perfect defense and may be subject to some future adaptive attacks, but they are an initial step for improving robustness and further demonstrate how much improvement there can be over current approaches. Fundamentally, our results are primarily to support our argument that future safety alignment should be made more than just a few tokens deep.
+
+
+\section*{Broader Impacts and Ethics Statement}
+
+Our work explicitly ties failure modes of safety alignment to potential shortcuts that can be taken by alignment methods and advocates for, and provides a path forward for, deeper alignment approaches that will improve safety more broadly. While a deeper understanding of the failures of alignment may result in increased ability to jailbreak models, we believe that open investigations of such failure modes are important for strengthening the safety of future models and broadly ensuring that models have positive societal impact. The proposed prototype approaches (in this work) for strengthening the alignment in current LLMs also contribute to the broader agenda of building safer and secure AI.
+
+\section*{Acknowledgement}
+
+%\xiangyu{please drop in your acknowledgement if any}
+
+We thank Kaixuan Huang, Zixuan Wang, Dingli Yu, Haoyu Zhao at Princeton University for their early discussions and feedback to this project. This work is supported by Princeton Language and Intelligence (PLI) Compute Cluster and Center for AI Safety~(CAIS) Compute Cluster. Xiangyu Qi and Ashwinee Panda are supported by a Superalignment Fast Grant from OpenAI, and Xiangyu Qi is also supported by the Princeton Gordon Y. S. Wu Fellowship. Prateek Mittal acknowledges the Princeton SEAS Innovation Grant. Peter Henderson acknowledges the Foundational Research Grants program at Georgetown University’s Center for Security and Emerging Technology. Any opinions, findings, conclusions, or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the funding agencies.
+
+
+
+
+
+

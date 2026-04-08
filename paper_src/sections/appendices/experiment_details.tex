@@ -1,0 +1,129 @@
+\section{Detailed Setups of Our Experiments}
+\label{appendix:experiment_details}
+
+\subsection{Compute Resources}
+
+In this work, we use single 4 $\times$ A100-80GB GPU nodes or 4 $\times$ H100-80GB GPU nodes for all experiments, depending on availability of the nodes. On each node, our experiments use up to 8 CPU cores and 256GB memory, but overall the experiments are not CPU intensive tasks.
+% \peter{TODO: let's add more stuff here.}
+%\xiangyu{Comprehensively specify all the experiment details.}
+
+%\kaifeng{remember to mention that the loss is averaged over all the tokens in the same batch}
+
+\subsection{General Configurations}
+
+\textbf{Decoding Parameters.} Throughout this paper, we use the top-p sampling with a temperate of 0.9 and a top-p parameter of 0.6 by default for decoding outputs from LLMs in our experiments. The only case where we do not follow this default configuration is the decoding parameters exploit experiment where the exploit itself needs to take use of different parameters by its design~\cite{huang2023catastrophic}.
+
+\textbf{Safety Evaluation.} As also mentioned in Section~\ref{subsec:preliminaries}, we use the GPT-4 based judge to evaluate the safety of model outputs, following the setup of \citet{qi2023fine}. Specifically, in such an evaluation pipeline, we pass (input, output) pairs to the GPT-4-Turbo model, and prompt the model to evaluate the harmfulness level of the output. The model will output a score ranging from 1 to 5, with higher score indicating being more harmful. When reporting ASR in our experiments, we report the ratio of outputs that get the highest score 5~(identical to the harmfulness rate metric in \citet{qi2023fine}). By default, HEx-PHI safety benchmark~\cite{hexphi} is used for safety evaluation. The only exception is the experiments in Table~\ref{tab:attack-safety-augmentation-main}, where we add additional evaluation on AdvBench for GCG attack evaluation~\cite{zou2023universal} and MaliciousInstruct for decoding parameters exploit~\cite{huang2023catastrophic}. These two additional safety evaluation datasets are used in the original papers of the two work, and we report results on both HEx-PHI and these additional safety evaluation datasets for a more complete reference.
+
+
+
+
+\subsection{Details of Data Augmentation Experiments}
+\label{appendix-subsec:experiment_details-data-augmentation}
+
+Here, we describe the implementation details of the data augmentation experiments in Section~\ref{subsec:data_augmentation_approach}.
+
+\textbf{Safety Data.} As noted in Eqn~\ref{eqn:data-augmentation-objective}, we use a safety dataset $D_H$ to keep generating safety recovery examples. To construct it, we first collect 256 harmful instructions. These instructions are mostly collected from the red-teaming data provided by~\citet{ganguli2022red}. We make sure they do not overlap with any of the safety evaluation datasets that we used in this paper, i.e., HEx-PHI~\cite{hexphi}, AdvBench~\cite{zou2023universal}, and MaliciousInstruct~\cite{huang2023catastrophic}. Then, we generate refusal answers for each harmful instruction using the initial Llama-2-7B-Chat model. We also collect the corresponding harmful responses for these instructions using a jailbroken version of the model (jailbroken through fine-tuning attacks per \citet{qi2023fine}). This results in the dataset $D_H$ with 256 examples of triplets $(\bx, \bm{h}, \bm{r})$.
+
+\textbf{Utility Data.} To prevent the decrease of model utility during the data augmentation fine-tuning, we also take benign instructions from the Alpaca~\cite{alpaca} dataset. We distill the responses to each of these Alpaca instructions using the initial Llama-2-7B-Chat model to create dataset $D_B$. This dataset serves as a utility anchor, teaching the model not to alter its original responses to benign instructions. 
+
+\textbf{Training details with Eqn~\ref{eqn:data-augmentation-objective}.} In the implementation of the augmentation fine-tuning as per Eqn~\ref{eqn:data-augmentation-objective}, we set the number of prefilled tokens $k$ to follow a distribution $\mathcal{P}_k$, where $k=0$ with a $50\%$ probability, and $k$ is uniformly sampled from $[1, 100]$ with a $50\%$ probability. We set $\alpha = 0.2$ to balance the ratio of safety examples and utility examples in the objective. In batch-wise training, this is implemented by randomly sampling 16 examples from $D_H$ and 64 examples from $D_B$ in each batch. Using this objective, we train the model for 10 epochs on $D_H$ with a learning rate of $2\times 10^{-5}$ using the AdamW optimizer (with the default configurations of the optimizer).
+
+\textbf{AlpacaEval.} We also evaluate the utility of the augmented fine-tuned model with AlpacaEval~\cite{alpaca_eval}, which is reported as a winrate against the text-davinci-003 model~(the default reference baseline for AlpacaEval). Specifically, we use the 1.0 version of AlpacaEval without length control. To ensure the setup is consistent with the safety evaluation, the official system prompt (with a focus on safety) of Llama-2-7B-Chat is used when running AlpacaEval. We note that the win rates here can therefore be generally lower than the numbers in official Alpaca leaderboard in which the safety system prompt is not applied. Under this evaluation, we note that the augmented fine-tuned model achieves a winrate of $49.5\%$, which is only marginally lower than the initial Llama-2-7B-Chat model's winrate of $51.8\%$.
+
+
+\textbf{Limitations.} Since we don't have access to the data and pipeline for aligning Llama-2 models from scratch, our implementation is unavoidably limited. As also specified in Section~\ref{subsec:data_augmentation_approach}, rather than doing the alignment training from scratch, alternatively, in implementation, we experiment by directly fine-tuning the already aligned Llama-2-7B-Chat model further with a mixture of the augmented safety recovery examples~($D_H$) and utility examples~($D_B$). This implementation is inherently sub-optimal. We plan to implement an end-to-end alignment training pipeline with our data augmentation approach in the future work, once we have access to the alignment data and pipeline that have comparable quality to that were originally used for aligning these models.
+
+
+\subsection{Details of Inference-Stage Attacks Experiments}
+\label{appendix-subsec:experiment_details-inference-stage-attacks}
+
+
+We have tested three inference-stage attacks in Section~\ref{subsec:evaluate_data_augmentation}, i.e., prefilling attack, GCG attack~\cite{zou2023universal}, and decoding parameters exploit~\cite{huang2023catastrophic}. We specify the details here.
+
+\textbf{Prefilling Attack.} Our implementation of the prefilling attack generally follows the setup that we specify in Section~\ref{subsubsec:inference_stage_vulnerabilities}. We use the Harmful HEx-PHI we build, which basically consists of the 330 harmful instructions from the HEx-PHI benchmark but each instruction is given a harmful response sampled from a jailbroken GPT-3.5-Turbo model. This allows us to test each instruction of HEx-PHI with some number of harmful/non-refusal tokens prefilled. Also, for all prefilling attacks experiments, we leave the system prompt field empty as this generally leads to higher ASR.
+
+\textbf{GCG Attack.} In the implementation of GCG attacks, we adopt the single model + multiple harmful behaviors setup from the original paper by \citet{zou2023universal}. Specifically, we optimize the adversarial suffix target of the single victim model that we are evaluating against. We train the adversarial suffix over 50 harmful behaviors data points. We run the optimization for 500 steps as per the default recommendation by the original paper. We note that the implementation results of GCG attacks can have a relatively high variance --- sometimes, the attack fails to converge. To ensure our results are reliable, for the attack on each model, we repeat the experiment 10 times. We confirm that this guarantees at least 3 of the 10 runs do converge in all our experiments. In Table~\ref{tab:attack-safety-augmentation-main}, when we report the ASR, we report the mean $\pm$ a standard deviation over the 3 most successful (with highest ASR) runs out of the 10 runs. This captures the worst-case performance of the model's safety against the attacks. Also, as shown in Table~\ref{tab:attack-safety-augmentation-main}, we report the Attack Success Rate on both HEx-PHI (the default safety evaluation dataset) and AdvBench (the safety evaluation dataset used in the original paper). Following the setup of \citet{zou2023universal}, the official system prompt is used when doing the attack.
+
+\textbf{Decoding Parameters Exploit.} We follow the same setup as per \citet{huang2023catastrophic}. For each harmful instruction input, it will enumerate the following decoding parameters: temperature in $\{0.05, 0.1, 0.15, 0.2, 0.25, ..., 0.95, 1.0\}$, top-k in $\{1, 2, 5, 10, 20, 50, 100, 200, 500\}$, and top-p in $\{0.05, 0.1, 0.15, 0.2, 0.25, ..., 0.95, 1.0\}$. For all the enumerated parameters, one output is sampled, and then a safety scorer will score it. The most unsafe output will be picked. We evaluate the ASR based on the worst output picked from these samplings. Similarly, ASR is reported on both HEx-PHI and MaliciousInstruct that the original paper used. Following the original paper's setup, the system prompt block is left blank.
+
+
+\subsection{Details of Fine-tuning Attacks Experiments}
+\label{appendix-subsec:experiment_details-fine-tuning-attacks}
+
+
+\subsubsection{Optimizer}
+\label{appendix-subsubsec:fine-tuning-optimizer}
+
+For all the fine-tuning experiments, we use the AdamW optimizer, with the first-order momentum parameter set to 0.5 and the second-order momentum parameter set to 0.999. For Llama-2-7B-Chat, a learning rate of $2\times 10^{-5}$ is used. For Gemma-1.1-7B-IT, we use a learning rate of $5 \times 10^{-6}$. A batch size of $64$ is used for all experiments.
+
+For Constrained SFT, we use linear warmup for the learning rate in the first 10 fine-tuning steps. This warmup makes sure the constraints imposed by the sigmoid function are gently initialized --- note that, at the start of the fine-tuning, the log ratio $\log~\pi_{\theta} / \pialigned$ in Eqn~\ref{eqn:soft-sft-fine-tuning-loss} is equal to 0 since $\pi_{\theta}$ is basically initialized as $\pialigned$. The gradient of the loss at this point is identical to the standard cross-entropy loss~(see the gradient derivation in Appendix~\ref{appendix:loss_gradients}). Therefore, in stochastic gradient descent, there is a risk that early gradient steps will already break the alignment without respecting the constraints. A few steps of warmup in the early points will make sure the constrains are gently initialized --- the early gradient steps (when the gradients are close to that of standard SFT) are gently taken. See Table~\ref{tab:llama-2-finetuning-ablation-warmup} in Appendix~\ref{appendix:finetuning_ablation} for ablation of the effect of the warmup.
+
+
+
+\subsubsection{Fine-tuning Attacks}
+
+
+We evaluate \textit{three fine-tuning attacks} from \citet{qi2023fine}.
+
+\textbf{Harmful Examples.} It fine-tunes the model with 100 (harmful input, harmful answer) pairs. We use exactly the same 100 pairs from \citet{qi2023fine}. We fine-tune models on this dataset for 25 epochs.
+
+\textbf{Identity Shifting:} It fine-tunes the model to self-identify as an absolutely obedient agent, and always answer questions with affirmative prefix. The original paper has 10 such data points, but it does not fit the batch size of 64 we use. So we extend it to 100 data points manually, in the same format. We fine-tune models on this dataset for 25 epochs.
+
+\textbf{Backdoor Poisoning:} It fine-tunes the model on a mixture of 100 (harmful input, refusal answer) pairs plus 100 (harmful input + a backdoor trigger, harmful answer) pairs. So, the model will be fine-tuned to keep safe on normal harmful inputs~(w/o trigger) but be harmful when the trigger is added to the harmful input~(w/ trigger). We use the same data from \citet{qi2023fine}. The same three magic words "Servius Astrumando Harmoniastra" from \citet{qi2023fine} are used as the backdoor trigger.
+
+
+
+
+
+\subsubsection{Benign Fine-tuning Use Cases}
+
+We also want to test whether the constrained fine-tuning objective can still fit benign downstream datasets to achieve comparable performances to that of the unconstrained objective. So, we experiment with \textit{three benign fine-tuning use cases} as well, including Samsum~\cite{samsum}, SQL Create Context~\cite{b-mc2_2023_sql-create-context} and GSM8k~\cite{cobbe2021gsm8k}. For each of the three datasets, we fine-tune models on them for 3 epochs.
+
+Specifically, Samsum is a dataset for summarization tasks. We report the ROUGE-1 score as the utility. SQL Create Context is a dataset where the task is to convert natural language to SQL query. The ROUGE-1 score is also used for its utility evaluation. GSM8k is a dataset for math tasks. We report the utility as the accuracy of the model's answers.
+
+
+
+\begin{comment}
+\begin{table}[!htbp]
+  \caption{Inference-Stage Attacks on Augmented Llama-2-7B-Chat~(ASR evaluated on HEx-PHI)} %\xiangyu{Numbers are still rough, running more accurate judge}} 
+  \centering
+    \resizebox{\linewidth}{!}{
+  \begin{tabular}{c|c|c|c}
+  \toprule
+  \hline
+  %\noalign{\smallskip}
+   &  Initial & Augmenting Normal Safety Data & Augmenting Counterfactual Safety Data \\
+   \hline
+   No Attack & 0\% & 0\% & 0\% \\
+  \hline
+  \multicolumn{4}{c}{\textit{$\downarrow$~\textbf{ASR} with Prefilling}}\\
+  \hline
+  5 tokens & 42.1\%  & 54.8\% & \textbf{2.8\%} \\
+  \hline
+  10 tokens & 51.5\% & 60.8\% & \textbf{2.9\%} \\
+  \hline
+  20 tokens & 56.1\% & 59.8\% & \textbf{3.4\%} \\
+  \hline
+  40 tokens & 57.0\% & 58.1\% & \textbf{4.5\%} \\
+  \hline
+  \multicolumn{4}{c}{\textit{$\downarrow$~\textbf{ASR} with Other Jailbreaking Attacks}}\\
+  \hline
+  GCG & 38.8\% & 37.6\% & \textbf{23.6\%} \\
+  \hline
+  Decoding Exploitation~\cite{huang2023catastrophic} &  54.5\% & 51.5\% & \textbf{11.2\%}  \\
+  %\hline
+  %\multicolumn{4}{c}{\textit{$\downarrow$~\textbf{ASR} with Fine-tuning}}\\
+  %\hline
+  %- &  & &  \\
+  %\hline
+  %- &  & &  \\
+  %\hline
+  %- &  & &  \\
+  %\hline
+  %- &  & &  \\
+  \hline
+  \end{tabular}}
+  \label{tab:attack-safety-augmentation-with-comparison-group}
+  \end{table}
+\end{comment}

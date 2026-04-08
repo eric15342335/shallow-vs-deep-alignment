@@ -22,6 +22,7 @@ class ScriptArguments:
 
 
     batch_size_per_device: int = field(default=16, metadata={"help": "the batch size"})
+    max_eval_samples: int = field(default=-1, metadata={"help": "max samples to evaluate (-1 = all)"})
     max_new_tokens: int = field(default=1024, metadata={"help": "the maximum number of new tokens"})
     do_sample: bool = field(default=True, metadata={"help": "do sample"})
     top_p: float = field(default=0.6, metadata={"help": "top p"})
@@ -64,7 +65,7 @@ if __name__ == "__main__":
     model.eval()
 
     evaluator.eval_in_batch(model, args.prompt_style, tokenizer, save_path = args.save_path, batch_size_per_device = args.batch_size_per_device,
-                bench = args.dataset, evaluator = args.evaluator,  #max_eval_samples = 100,
+                bench = args.dataset, evaluator = args.evaluator, max_eval_samples = args.max_eval_samples,
                 max_new_tokens = args.max_new_tokens, 
                 do_sample = args.do_sample, top_p = args.top_p, temperature = args.temperature, use_cache = args.use_cache, top_k = args.top_k,
                 repetition_penalty = args.repetition_penalty, length_penalty = args.length_penalty)

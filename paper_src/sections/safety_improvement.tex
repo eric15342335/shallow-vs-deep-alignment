@@ -1,0 +1,29 @@
+\section{Safety Improvement}
+\label{sec:safety_imporvement}
+
+\subsection{Protection of Shallow Safety Alignment Can be Biased to The First Few Tokens}
+
+Recall the earlier training objective we design:
+\begin{align*}
+    & \mathop{\mathbb E}_{(x,y)\sim D} -\frac{1}{\beta}\log\Bigg[\sigma \bigg(\beta \cdot \log \frac{\pi_{\theta}(y|x)}{\pi_{\text{ref}}(y|x)} \bigg) \Bigg]
+\end{align*}
+
+Let's use $y_i$ to denote the i-th token of $y$, \ahmad{might be best to use $\by$ and $\bx$ for sequence vs $y$ and $y_i$ for token} $|y|$ to denote the number of tokens in $y$. Above objective is equivalent to:
+\begin{align*}
+    & \mathop{\mathbb E}_{(x,y)\sim D} -\frac{1}{\beta}\log\Bigg[\sigma \bigg( \beta \cdot \sum_{i=1}^{|y|} \log \frac{\pi_{\theta}(y_i|x, y_1,...,y_{i-1})}{\pi_{\text{ref}}(y_i|x, y_1,...,y_{i-1})} \bigg) \Bigg]
+\end{align*}
+
+The initial objective has a penalty for length, and the $\beta$ is unbiased for each token.
+
+\textbf{Revision:} \textbf{1)} Take out the loss term for each token, making them independent:
+\begin{align*}
+    & \mathop{\mathbb E}_{(x,y)\sim D} - \frac{1}{|y|} \cdot \sum_{i=1}^{|y|} \frac{1}{\beta} \log\Bigg[\sigma \bigg( \beta \cdot  \log \frac{\pi_{\theta}(y_i|x, y_1,...,y_{i-1})}{\pi_{\text{ref}}(y_i|x, y_1,...,y_{i-1})} \bigg) \Bigg]
+\end{align*}
+\textbf{2)} Use biased beta for different tokens~(i.e., larger beta for the first few tokens). New objective:
+\begin{align*}
+    & \mathop{\mathbb E}_{(x,y)\sim D} - \frac{1}{|y|} \cdot \sum_{i=1}^{|y|} \frac{1}{\beta_i} \log\Bigg[\sigma \bigg( \beta_i \cdot  \log \frac{\pi_{\theta}(y_i|x, y_1,...,y_{i-1})}{\pi_{\text{ref}}(y_i|x, y_1,...,y_{i-1})} \bigg) \Bigg]
+\end{align*}
+
+Larger beta for the first few tokens, e.g., $\{\beta_i\} = \{2, 2, 1, 1, 1, 0.1, 0.1, ...\}$
+
+\subsection{How to Make the Safety Alignment Deeper?}

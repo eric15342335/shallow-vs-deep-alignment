@@ -104,8 +104,8 @@ def chatgpt_asr(questions, results):
 
 def eval_safety_in_batch(model, prompt_style, tokenizer, num_prefix_tokens = 0, save_path = None, batch_size_per_device = 16,
                 bench = 'hex-phi', evaluator = 'key_word',
-                system_prompt = None, input_template = None, output_header = None, 
-                max_new_tokens = 512, 
+                system_prompt = None, input_template = None, output_header = None,
+                max_new_tokens = 512, max_eval_samples = -1,
                 do_sample = True, top_p = 0.9, temperature = 0.6, use_cache = True, top_k = 50,
                 repetition_penalty = 1.0, length_penalty = 1.0, **kwargs):
     
@@ -126,14 +126,15 @@ def eval_safety_in_batch(model, prompt_style, tokenizer, num_prefix_tokens = 0, 
         else:
             raise ValueError('Benchmark {} not maintained'.format(bench))
         
+        if max_eval_samples > 0:
+            dataset = dataset[:max_eval_samples]
         dataset = MyDataset(dataset)
-    
+
 
     cnt = 0
     results = []
     collate_fn = custom_collate_fn_for_unlabeled_data
 
-    # prepare dataloader
     dataloader_params = {
                 "batch_size": batch_size_per_device,
                 "collate_fn": collate_fn,
@@ -141,7 +142,7 @@ def eval_safety_in_batch(model, prompt_style, tokenizer, num_prefix_tokens = 0, 
             }
     
     data_loader = accelerator.prepare(DataLoader(dataset, **dataloader_params))
-    model = accelerator.prepare(model)
+    model = model.to(accelerator.device)
     model.eval()
     
 

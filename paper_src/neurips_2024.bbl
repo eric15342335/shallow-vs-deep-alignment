@@ -1,0 +1,320 @@
+\begin{thebibliography}{62}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Brown et~al.(2020)Brown, Mann, Ryder, Subbiah, Kaplan, Dhariwal, Neelakantan, Shyam, Sastry, Askell, et~al.]{brown2020language}
+Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared~D Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, et~al.
+\newblock Language models are few-shot learners.
+\newblock \emph{Advances in neural information processing systems}, 33:\penalty0 1877--1901, 2020.
+
+\bibitem[OpenAI(2022)]{chatgpt}
+OpenAI.
+\newblock {Introducing ChatGPT}.
+\newblock \url{https://openai.com/blog/chatgpt}, 2022.
+
+\bibitem[OpenAI(2023)]{openai2023gpt4}
+OpenAI.
+\newblock Gpt-4 technical report, 2023.
+
+\bibitem[Touvron et~al.(2023{\natexlab{a}})Touvron, Lavril, Izacard, Martinet, Lachaux, Lacroix, Rozi{\`e}re, Goyal, Hambro, Azhar, et~al.]{touvron2023llama}
+Hugo Touvron, Thibaut Lavril, Gautier Izacard, Xavier Martinet, Marie-Anne Lachaux, Timoth{\'e}e Lacroix, Baptiste Rozi{\`e}re, Naman Goyal, Eric Hambro, Faisal Azhar, et~al.
+\newblock Llama: Open and efficient foundation language models.
+\newblock \emph{arXiv preprint arXiv:2302.13971}, 2023{\natexlab{a}}.
+
+\bibitem[Touvron et~al.(2023{\natexlab{b}})Touvron, Martin, Stone, Albert, Almahairi, Babaei, Bashlykov, Batra, Bhargava, Bhosale, et~al.]{touvron2023llama-2}
+Hugo Touvron, Louis Martin, Kevin Stone, Peter Albert, Amjad Almahairi, Yasmine Babaei, Nikolay Bashlykov, Soumya Batra, Prajjwal Bhargava, Shruti Bhosale, et~al.
+\newblock Llama 2: Open foundation and fine-tuned chat models.
+\newblock \emph{arXiv preprint arXiv:2307.09288}, 2023{\natexlab{b}}.
+
+\bibitem[Anthropic(2023)]{claude}
+Anthropic.
+\newblock {Introducing Claude}.
+\newblock \url{https://www.anthropic.com/index/introducing-claude}, 2023.
+
+\bibitem[{Gemini Team}(2023)]{geminiteam2023gemini}
+{Gemini Team}.
+\newblock Gemini: A family of highly capable multimodal models.
+\newblock \emph{arXiv preprint arXiv:2312.11805}, 2023.
+
+\bibitem[Leike et~al.(2018)Leike, Krueger, Everitt, Martic, Maini, and Legg]{leike2018scalable}
+Jan Leike, David Krueger, Tom Everitt, Miljan Martic, Vishal Maini, and Shane Legg.
+\newblock Scalable agent alignment via reward modeling: a research direction, 2018.
+
+\bibitem[Christian(2020)]{christian2020alignment}
+Brian Christian.
+\newblock \emph{The alignment problem: Machine learning and human values}.
+\newblock WW Norton \& Company, 2020.
+
+\bibitem[Kenton et~al.(2021)Kenton, Everitt, Weidinger, Gabriel, Mikulik, and Irving]{kenton2021alignment}
+Zachary Kenton, Tom Everitt, Laura Weidinger, Iason Gabriel, Vladimir Mikulik, and Geoffrey Irving.
+\newblock Alignment of language agents.
+\newblock \emph{arXiv preprint arXiv:2103.14659}, 2021.
+
+\bibitem[Leike and Sutskever(2023)]{super-alignment}
+Jan Leike and Ilya Sutskever.
+\newblock {Introducing Superalignment}.
+\newblock \url{https://openai.com/blog/introducing-superalignment}, 2023.
+
+\bibitem[Ji et~al.(2023)Ji, Qiu, Chen, Zhang, Lou, Wang, Duan, He, Zhou, Zhang, et~al.]{ji2023ai}
+Jiaming Ji, Tianyi Qiu, Boyuan Chen, Borong Zhang, Hantao Lou, Kaile Wang, Yawen Duan, Zhonghao He, Jiayi Zhou, Zhaowei Zhang, et~al.
+\newblock Ai alignment: A comprehensive survey.
+\newblock \emph{arXiv preprint arXiv:2310.19852}, 2023.
+
+\bibitem[Wei et~al.(2021)Wei, Bosma, Zhao, Guu, Yu, Lester, Du, Dai, and Le]{wei2021finetuned}
+Jason Wei, Maarten Bosma, Vincent~Y Zhao, Kelvin Guu, Adams~Wei Yu, Brian Lester, Nan Du, Andrew~M Dai, and Quoc~V Le.
+\newblock Finetuned language models are zero-shot learners.
+\newblock \emph{arXiv preprint arXiv:2109.01652}, 2021.
+
+\bibitem[Ouyang et~al.(2022)Ouyang, Wu, Jiang, Almeida, Wainwright, Mishkin, Zhang, Agarwal, Slama, Ray, et~al.]{ouyang2022training}
+Long Ouyang, Jeffrey Wu, Xu~Jiang, Diogo Almeida, Carroll Wainwright, Pamela Mishkin, Chong Zhang, Sandhini Agarwal, Katarina Slama, Alex Ray, et~al.
+\newblock Training language models to follow instructions with human feedback.
+\newblock \emph{Advances in Neural Information Processing Systems}, 35:\penalty0 27730--27744, 2022.
+
+\bibitem[Bai et~al.(2022{\natexlab{a}})Bai, Jones, Ndousse, Askell, Chen, DasSarma, Drain, Fort, Ganguli, Henighan, Joseph, Kadavath, Kernion, Conerly, El-Showk, Elhage, Hatfield-Dodds, Hernandez, Hume, Johnston, Kravec, Lovitt, Nanda, Olsson, Amodei, Brown, Clark, McCandlish, Olah, Mann, and Kaplan]{bai2022training}
+Yuntao Bai, Andy Jones, Kamal Ndousse, Amanda Askell, Anna Chen, Nova DasSarma, Dawn Drain, Stanislav Fort, Deep Ganguli, Tom Henighan, Nicholas Joseph, Saurav Kadavath, Jackson Kernion, Tom Conerly, Sheer El-Showk, Nelson Elhage, Zac Hatfield-Dodds, Danny Hernandez, Tristan Hume, Scott Johnston, Shauna Kravec, Liane Lovitt, Neel Nanda, Catherine Olsson, Dario Amodei, Tom Brown, Jack Clark, Sam McCandlish, Chris Olah, Ben Mann, and Jared Kaplan.
+\newblock Training a helpful and harmless assistant with reinforcement learning from human feedback, 2022{\natexlab{a}}.
+
+\bibitem[Rafailov et~al.(2023)Rafailov, Sharma, Mitchell, Manning, Ermon, and Finn]{rafailov2023direct}
+Rafael Rafailov, Archit Sharma, Eric Mitchell, Christopher~D Manning, Stefano Ermon, and Chelsea Finn.
+\newblock Direct preference optimization: Your language model is secretly a reward model.
+\newblock In A.~Oh, T.~Naumann, A.~Globerson, K.~Saenko, M.~Hardt, and S.~Levine, editors, \emph{Advances in Neural Information Processing Systems}, volume~36, pages 53728--53741. Curran Associates, Inc., 2023.
+\newblock URL \url{https://proceedings.neurips.cc/paper_files/paper/2023/file/a85b405ed65c6477a4fe8302b5e06ce7-Paper-Conference.pdf}.
+
+\bibitem[Qi et~al.(2023{\natexlab{a}})Qi, Huang, Panda, Henderson, Wang, and Mittal]{qi2023visual}
+Xiangyu Qi, Kaixuan Huang, Ashwinee Panda, Peter Henderson, Mengdi Wang, and Prateek Mittal.
+\newblock Visual adversarial examples jailbreak aligned large language models, 2023{\natexlab{a}}.
+
+\bibitem[Carlini et~al.(2023)Carlini, Nasr, Choquette-Choo, Jagielski, Gao, Awadalla, Koh, Ippolito, Lee, Tramer, et~al.]{carlini2023aligned}
+Nicholas Carlini, Milad Nasr, Christopher~A Choquette-Choo, Matthew Jagielski, Irena Gao, Anas Awadalla, Pang~Wei Koh, Daphne Ippolito, Katherine Lee, Florian Tramer, et~al.
+\newblock Are aligned neural networks adversarially aligned?
+\newblock \emph{arXiv preprint arXiv:2306.15447}, 2023.
+
+\bibitem[Zou et~al.(2023{\natexlab{a}})Zou, Phan, Chen, Campbell, Guo, Ren, Pan, Yin, Mazeika, Dombrowski, et~al.]{zou2023representation}
+Andy Zou, Long Phan, Sarah Chen, James Campbell, Phillip Guo, Richard Ren, Alexander Pan, Xuwang Yin, Mantas Mazeika, Ann-Kathrin Dombrowski, et~al.
+\newblock Representation engineering: A top-down approach to ai transparency.
+\newblock \emph{arXiv preprint arXiv:2310.01405}, 2023{\natexlab{a}}.
+
+\bibitem[Chao et~al.(2023)Chao, Robey, Dobriban, Hassani, Pappas, and Wong]{chao2023jailbreaking}
+Patrick Chao, Alexander Robey, Edgar Dobriban, Hamed Hassani, George~J Pappas, and Eric Wong.
+\newblock Jailbreaking black box large language models in twenty queries.
+\newblock \emph{arXiv preprint arXiv:2310.08419}, 2023.
+
+\bibitem[Andriushchenko et~al.(2024)Andriushchenko, Croce, and Flammarion]{andriushchenko2024jailbreaking}
+Maksym Andriushchenko, Francesco Croce, and Nicolas Flammarion.
+\newblock Jailbreaking leading safety-aligned llms with simple adaptive attacks, 2024.
+
+\bibitem[Qi et~al.(2023{\natexlab{b}})Qi, Zeng, Xie, Chen, Jia, Mittal, and Henderson]{qi2023fine}
+Xiangyu Qi, Yi~Zeng, Tinghao Xie, Pin-Yu Chen, Ruoxi Jia, Prateek Mittal, and Peter Henderson.
+\newblock Fine-tuning aligned language models compromises safety, even when users do not intend to!
+\newblock \emph{arXiv preprint arXiv:2310.03693}, 2023{\natexlab{b}}.
+
+\bibitem[Zhan et~al.(2023)Zhan, Fang, Bindu, Gupta, Hashimoto, and Kang]{zhan2023removing}
+Qiusi Zhan, Richard Fang, Rohan Bindu, Akul Gupta, Tatsunori Hashimoto, and Daniel Kang.
+\newblock Removing rlhf protections in gpt-4 via fine-tuning.
+\newblock \emph{arXiv preprint arXiv:2311.05553}, 2023.
+
+\bibitem[Huang et~al.(2023)Huang, Gupta, Xia, Li, and Chen]{huang2023catastrophic}
+Yangsibo Huang, Samyak Gupta, Mengzhou Xia, Kai Li, and Danqi Chen.
+\newblock Catastrophic jailbreak of open-source llms via exploiting generation.
+\newblock \emph{arXiv preprint arXiv:2310.06987}, 2023.
+
+\bibitem[Lin et~al.(2024)Lin, Ravichander, Lu, Dziri, Sclar, Chandu, Bhagavatula, and Choi]{lin2024unlocking}
+Bill~Yuchen Lin, Abhilasha Ravichander, Ximing Lu, Nouha Dziri, Melanie Sclar, Khyathi Chandu, Chandra Bhagavatula, and Yejin Choi.
+\newblock The unlocking spell on base {LLM}s: Rethinking alignment via in-context learning.
+\newblock In \emph{The Twelfth International Conference on Learning Representations}, 2024.
+\newblock URL \url{https://openreview.net/forum?id=wxJ0eXwwda}.
+
+\bibitem[Zhang and Wu(2024)]{zhang2024dissecting}
+Xiao Zhang and Ji~Wu.
+\newblock Dissecting learning and forgetting in language model finetuning.
+\newblock In \emph{The Twelfth International Conference on Learning Representations}, 2024.
+\newblock URL \url{https://openreview.net/forum?id=tmsqb6WpLz}.
+
+\bibitem[Zhao et~al.(2024)Zhao, Yang, Pang, Du, Li, Wang, and Wang]{zhao2024weak}
+Xuandong Zhao, Xianjun Yang, Tianyu Pang, Chao Du, Lei Li, Yu-Xiang Wang, and William~Yang Wang.
+\newblock Weak-to-strong jailbreaking on large language models.
+\newblock \emph{arXiv preprint arXiv:2401.17256}, 2024.
+
+\bibitem[Zhou et~al.(2023)Zhou, Liu, Xu, Iyer, Sun, Mao, Ma, Efrat, Yu, YU, Zhang, Ghosh, Lewis, Zettlemoyer, and Levy]{zhou2023lima}
+Chunting Zhou, Pengfei Liu, Puxin Xu, Srinivasan Iyer, Jiao Sun, Yuning Mao, Xuezhe Ma, Avia Efrat, Ping Yu, LILI YU, Susan Zhang, Gargi Ghosh, Mike Lewis, Luke Zettlemoyer, and Omer Levy.
+\newblock Lima: Less is more for alignment.
+\newblock In A.~Oh, T.~Naumann, A.~Globerson, K.~Saenko, M.~Hardt, and S.~Levine, editors, \emph{Advances in Neural Information Processing Systems}, volume~36, pages 55006--55021. Curran Associates, Inc., 2023.
+\newblock URL \url{https://proceedings.neurips.cc/paper_files/paper/2023/file/ac662d74829e4407ce1d126477f4a03a-Paper-Conference.pdf}.
+
+\bibitem[Zou et~al.(2023{\natexlab{b}})Zou, Wang, Kolter, and Fredrikson]{zou2023universal}
+Andy Zou, Zifan Wang, J~Zico Kolter, and Matt Fredrikson.
+\newblock Universal and transferable adversarial attacks on aligned language models.
+\newblock \emph{arXiv preprint arXiv:2307.15043}, 2023{\natexlab{b}}.
+
+\bibitem[{Haize Labs}(2024)]{prefilling-attack}
+{Haize Labs}.
+\newblock A trivial jailbreak against llama 3.
+\newblock \url{https://github.com/haizelabs/llama3-jailbreak}, 2024.
+
+\bibitem[Team et~al.(2024)Team, Mesnard, Hardin, Dadashi, Bhupatiraju, Pathak, Sifre, Rivi{\`e}re, Kale, Love, et~al.]{team2024gemma}
+Gemma Team, Thomas Mesnard, Cassidy Hardin, Robert Dadashi, Surya Bhupatiraju, Shreya Pathak, Laurent Sifre, Morgane Rivi{\`e}re, Mihir~Sanjay Kale, Juliette Love, et~al.
+\newblock Gemma: Open models based on gemini research and technology.
+\newblock \emph{arXiv preprint arXiv:2403.08295}, 2024.
+
+\bibitem[Qi et~al.(2023{\natexlab{c}})Qi, Zeng, Xie, Chen, Jia, Mittal, and Henderson]{hexphi}
+Xiangyu Qi, Yi~Zeng, Tinghao Xie, Pin-Yu Chen, Ruoxi Jia, Prateek Mittal, and Peter Henderson.
+\newblock Hex-phi: Human-extended policy-oriented harmful instruction benchmark.
+\newblock \url{https://huggingface.co/datasets/LLM-Tuning-Safety/HEx-PHI}, 2023{\natexlab{c}}.
+
+\bibitem[Gao et~al.(2022)Gao, Schulman, and Hilton]{gao2022scaling}
+Leo Gao, John Schulman, and Jacob Hilton.
+\newblock Scaling laws for reward model overoptimization, 2022.
+
+\bibitem[Anthropic(2024)]{claudePrefilling}
+Anthropic.
+\newblock {Prefill Claude's response}.
+\newblock \url{https://docs.anthropic.com/claude/docs/prefill-claudes-response}, 2024.
+
+\bibitem[He et~al.(2024)He, Xia, and Henderson]{he2024s}
+Luxi He, Mengzhou Xia, and Peter Henderson.
+\newblock What's in your" safe" data?: Identifying benign data that breaks safety.
+\newblock \emph{arXiv preprint arXiv:2404.01099}, 2024.
+
+\bibitem[Taori et~al.(2023)Taori, Gulrajani, Zhang, Dubois, Li, Guestrin, Liang, and Hashimoto]{alpaca}
+Rohan Taori, Ishaan Gulrajani, Tianyi Zhang, Yann Dubois, Xuechen Li, Carlos Guestrin, Percy Liang, and Tatsunori~B. Hashimoto.
+\newblock Stanford alpaca: An instruction-following llama model.
+\newblock \url{https://github.com/tatsu-lab/stanford_alpaca}, 2023.
+
+\bibitem[Li et~al.(2023)Li, Zhang, Dubois, Taori, Gulrajani, Guestrin, Liang, and Hashimoto]{alpaca_eval}
+Xuechen Li, Tianyi Zhang, Yann Dubois, Rohan Taori, Ishaan Gulrajani, Carlos Guestrin, Percy Liang, and Tatsunori~B. Hashimoto.
+\newblock Alpacaeval: An automatic evaluator of instruction-following models.
+\newblock \url{https://github.com/tatsu-lab/alpaca_eval}, 2023.
+
+\bibitem[Peng et~al.(2023)Peng, Wu, Allard, Kilpatrick, and Heidel]{openaiFinetune}
+Andrew Peng, Michael Wu, John Allard, Logan Kilpatrick, and Steven Heidel.
+\newblock Gpt-3.5 turbo fine-tuning and api updates, 8 2023.
+\newblock URL \url{https://openai.com/blog/gpt-3-5-turbo-fine-tuning-and-api-updates}.
+
+\bibitem[Ethayarajh et~al.(2024)Ethayarajh, Xu, Muennighoff, Jurafsky, and Kiela]{ethayarajh2024kto}
+Kawin Ethayarajh, Winnie Xu, Niklas Muennighoff, Dan Jurafsky, and Douwe Kiela.
+\newblock Kto: Model alignment as prospect theoretic optimization.
+\newblock \emph{arXiv preprint arXiv:2402.01306}, 2024.
+
+\bibitem[Mudgal et~al.(2024)Mudgal, Lee, Ganapathy, Li, Wang, Huang, Chen, Cheng, Collins, Strohman, Chen, Beutel, and Beirami]{mudgal2024controlled}
+Sidharth Mudgal, Jong Lee, Harish Ganapathy, YaGuang Li, Tao Wang, Yanping Huang, Zhifeng Chen, Heng-Tze Cheng, Michael Collins, Trevor Strohman, Jilin Chen, Alex Beutel, and Ahmad Beirami.
+\newblock Controlled decoding from language models.
+\newblock In \emph{International Conference on Machine Learning (ICML)}, 2024.
+
+\bibitem[Dugas et~al.(2000)Dugas, Bengio, B{'e}lisle, Nadeau, and Garcia]{dugas2000incorporating}
+Charles Dugas, Yoshua Bengio, Fran{\c{c}}ois B{'e}lisle, Claude Nadeau, and Ren{'e} Garcia.
+\newblock Incorporating second-order functional knowledge for better option pricing.
+\newblock In \emph{Proceedings of the 13th International Conference on Neural Information Processing Systems (NIPS'00)}, pages 451--457. MIT Press, 2000.
+\newblock Since the sigmoid $h$ has a positive first derivative, its primitive, which we call softplus, is convex.
+
+\bibitem[Gliwa et~al.(2019)Gliwa, Mochol, Biesek, and Wawer]{samsum}
+Bogdan Gliwa, Iwona Mochol, Maciej Biesek, and Aleksander Wawer.
+\newblock {SAMS}um corpus: A human-annotated dialogue dataset for abstractive summarization.
+\newblock In \emph{Proceedings of the 2nd Workshop on New Frontiers in Summarization}, pages 70--79, Hong Kong, China, November 2019. Association for Computational Linguistics.
+\newblock \doi{10.18653/v1/D19-5409}.
+\newblock URL \url{https://www.aclweb.org/anthology/D19-5409}.
+
+\bibitem[b~mc2(2023)]{b-mc2_2023_sql-create-context}
+b~mc2.
+\newblock sql-create-context dataset, 2023.
+\newblock URL \url{https://huggingface.co/datasets/b-mc2/sql-create-context}.
+\newblock This dataset was created by modifying data from the following sources: \cite{zhongSeq2SQL2017, yu2018spider}.
+
+\bibitem[Cobbe et~al.(2021)Cobbe, Kosaraju, Bavarian, Chen, Jun, Kaiser, Plappert, Tworek, Hilton, Nakano, Hesse, and Schulman]{cobbe2021gsm8k}
+Karl Cobbe, Vineet Kosaraju, Mohammad Bavarian, Mark Chen, Heewoo Jun, Lukasz Kaiser, Matthias Plappert, Jerry Tworek, Jacob Hilton, Reiichiro Nakano, Christopher Hesse, and John Schulman.
+\newblock Training verifiers to solve math word problems.
+\newblock \emph{arXiv preprint arXiv:2110.14168}, 2021.
+
+\bibitem[Bai et~al.(2022{\natexlab{b}})Bai, Kadavath, Kundu, Askell, Kernion, Jones, Chen, Goldie, Mirhoseini, McKinnon, et~al.]{bai2022constitutional}
+Yuntao Bai, Saurav Kadavath, Sandipan Kundu, Amanda Askell, Jackson Kernion, Andy Jones, Anna Chen, Anna Goldie, Azalia Mirhoseini, Cameron McKinnon, et~al.
+\newblock Constitutional ai: Harmlessness from ai feedback.
+\newblock \emph{arXiv preprint arXiv:2212.08073}, 2022{\natexlab{b}}.
+
+\bibitem[Zeng et~al.(2024)Zeng, Lin, Zhang, Yang, Jia, and Shi]{zeng2024johnny}
+Yi~Zeng, Hongpeng Lin, Jingwen Zhang, Diyi Yang, Ruoxi Jia, and Weiyan Shi.
+\newblock How johnny can persuade llms to jailbreak them: Rethinking persuasion to challenge ai safety by humanizing llms.
+\newblock \emph{arXiv preprint arXiv:2401.06373}, 2024.
+
+\bibitem[Yang et~al.(2023)Yang, Wang, Zhang, Petzold, Wang, Zhao, and Lin]{yang2023shadow}
+Xianjun Yang, Xiao Wang, Qi~Zhang, Linda Petzold, William~Yang Wang, Xun Zhao, and Dahua Lin.
+\newblock Shadow alignment: The ease of subverting safely-aligned language models.
+\newblock \emph{arXiv preprint arXiv:2310.02949}, 2023.
+
+\bibitem[Gade et~al.(2023)Gade, Lermen, Rogers-Smith, and Ladish]{gade2023badllama}
+Pranav Gade, Simon Lermen, Charlie Rogers-Smith, and Jeffrey Ladish.
+\newblock Badllama: cheaply removing safety fine-tuning from llama 2-chat 13b.
+\newblock \emph{arXiv preprint arXiv:2311.00117}, 2023.
+
+\bibitem[Inan et~al.(2023)Inan, Upasani, Chi, Rungta, Iyer, Mao, Tontchev, Hu, Fuller, Testuggine, et~al.]{inan2023llama}
+Hakan Inan, Kartikeya Upasani, Jianfeng Chi, Rashi Rungta, Krithika Iyer, Yuning Mao, Michael Tontchev, Qing Hu, Brian Fuller, Davide Testuggine, et~al.
+\newblock Llama guard: Llm-based input-output safeguard for human-ai conversations.
+\newblock \emph{arXiv preprint arXiv:2312.06674}, 2023.
+
+\bibitem[Zou(2023)]{break-llama-guard}
+Andy Zou.
+\newblock Breaking llama guard.
+\newblock \url{https://github.com/andyzoujm/breaking-llama-guard}, 2023.
+
+\bibitem[Wei et~al.(2024)Wei, Huang, Huang, Xie, Qi, Xia, Mittal, Wang, and Henderson]{wei2024assessing}
+Boyi Wei, Kaixuan Huang, Yangsibo Huang, Tinghao Xie, Xiangyu Qi, Mengzhou Xia, Prateek Mittal, Mengdi Wang, and Peter Henderson.
+\newblock Assessing the brittleness of safety alignment via pruning and low-rank modifications.
+\newblock \emph{arXiv preprint arXiv:2402.05162}, 2024.
+
+\bibitem[Jain et~al.(2023)Jain, Kirk, Lubana, Dick, Tanaka, Grefenstette, Rockt{\"a}schel, and Krueger]{jain2023mechanistically}
+Samyak Jain, Robert Kirk, Ekdeep~Singh Lubana, Robert~P Dick, Hidenori Tanaka, Edward Grefenstette, Tim Rockt{\"a}schel, and David~Scott Krueger.
+\newblock Mechanistically analyzing the effects of fine-tuning on procedurally defined tasks.
+\newblock \emph{arXiv preprint arXiv:2311.12786}, 2023.
+
+\bibitem[Xu et~al.(2024)Xu, Jiang, Niu, Jia, Lin, and Poovendran]{xu2024safedecoding}
+Zhangchen Xu, Fengqing Jiang, Luyao Niu, Jinyuan Jia, Bill~Yuchen Lin, and Radha Poovendran.
+\newblock Safedecoding: Defending against jailbreak attacks via safety-aware decoding.
+\newblock \emph{arXiv preprint arXiv:2402.08983}, 2024.
+
+\bibitem[Agarwal et~al.(2021)Agarwal, Kakade, Lee, and Mahajan]{agarwal2021theory}
+Alekh Agarwal, Sham~M Kakade, Jason~D Lee, and Gaurav Mahajan.
+\newblock On the theory of policy gradient methods: Optimality, approximation, and distribution shift.
+\newblock \emph{Journal of Machine Learning Research}, 22\penalty0 (98):\penalty0 1--76, 2021.
+
+\bibitem[Thananjeyan et~al.(2021)Thananjeyan, Balakrishna, Nair, Luo, Srinivasan, Hwang, Gonzalez, Ibarz, Finn, and Goldberg]{thananjeyan2021recovery}
+Brijen Thananjeyan, Ashwin Balakrishna, Suraj Nair, Michael Luo, Krishnan Srinivasan, Minho Hwang, Joseph~E Gonzalez, Julian Ibarz, Chelsea Finn, and Ken Goldberg.
+\newblock Recovery rl: Safe reinforcement learning with learned recovery zones.
+\newblock \emph{IEEE Robotics and Automation Letters}, 6\penalty0 (3):\penalty0 4915--4922, 2021.
+
+\bibitem[Burridge et~al.(1999)Burridge, Rizzi, and Koditschek]{burridge1999sequential}
+Robert~R Burridge, Alfred~A Rizzi, and Daniel~E Koditschek.
+\newblock Sequential composition of dynamically dexterous robot behaviors.
+\newblock \emph{The International Journal of Robotics Research}, 18\penalty0 (6):\penalty0 534--555, 1999.
+
+\bibitem[Ames et~al.(2019)Ames, Coogan, Egerstedt, Notomista, Sreenath, and Tabuada]{ames2019control}
+Aaron~D Ames, Samuel Coogan, Magnus Egerstedt, Gennaro Notomista, Koushil Sreenath, and Paulo Tabuada.
+\newblock Control barrier functions: Theory and applications.
+\newblock In \emph{2019 18th European control conference (ECC)}, pages 3420--3431. IEEE, 2019.
+
+\bibitem[Henderson et~al.(2023)Henderson, Mitchell, Manning, Jurafsky, and Finn]{henderson2023self}
+Peter Henderson, Eric Mitchell, Christopher Manning, Dan Jurafsky, and Chelsea Finn.
+\newblock Self-destructing models: Increasing the costs of harmful dual uses of foundation models.
+\newblock In \emph{Proceedings of the 2023 AAAI/ACM Conference on AI, Ethics, and Society}, pages 287--296, 2023.
+
+\bibitem[Zhong et~al.(2017)Zhong, Xiong, and Socher]{zhongSeq2SQL2017}
+Victor Zhong, Caiming Xiong, and Richard Socher.
+\newblock Seq2sql: Generating structured queries from natural language using reinforcement learning.
+\newblock \emph{CoRR}, abs/1709.00103, 2017.
+
+\bibitem[Yu et~al.(2018)Yu, Zhang, Yang, Yasunaga, Wang, Li, Ma, Li, Yao, Roman, et~al.]{yu2018spider}
+Tao Yu, Rui Zhang, Kai Yang, Michihiro Yasunaga, Dongxu Wang, Zifan Li, James Ma, Irene Li, Qingning Yao, Shanelle Roman, et~al.
+\newblock Spider: A large-scale human-labeled dataset for complex and cross-domain semantic parsing and text-to-sql task.
+\newblock \emph{arXiv preprint arXiv:1809.08887}, 2018.
+
+\bibitem[Ganguli et~al.(2022)Ganguli, Lovitt, Kernion, Askell, Bai, Kadavath, Mann, Perez, Schiefer, Ndousse, et~al.]{ganguli2022red}
+Deep Ganguli, Liane Lovitt, Jackson Kernion, Amanda Askell, Yuntao Bai, Saurav Kadavath, Ben Mann, Ethan Perez, Nicholas Schiefer, Kamal Ndousse, et~al.
+\newblock Red teaming language models to reduce harms: Methods, scaling behaviors, and lessons learned.
+\newblock \emph{arXiv preprint arXiv:2209.07858}, 2022.
+
+\bibitem[Bradley and Terry(1952)]{bradley1952rank}
+Ralph~Allan Bradley and Milton~E Terry.
+\newblock Rank analysis of incomplete block designs: I. the method of paired comparisons.
+\newblock \emph{Biometrika}, 39\penalty0 (3/4):\penalty0 324--345, 1952.
+
+\end{thebibliography}

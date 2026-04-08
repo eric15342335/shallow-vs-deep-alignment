@@ -137,9 +137,8 @@ def eval_in_batch(model, prompt_style, tokenizer, save_path = None,
         "shuffle": False,
     }
 
-    # prepare dataloader
     data_loader = accelerator.prepare(DataLoader(dataset, **dataloader_params))
-    model = accelerator.prepare(model)
+    model = model.to(accelerator.device)
     model.eval()
     
     Generator = chat.Chat(model = model, prompt_style = prompt_style, tokenizer = tokenizer,
@@ -202,7 +201,6 @@ def eval_in_batch(model, prompt_style, tokenizer, save_path = None,
                         print('Ans:', ans )
                     print('\n\n\n')
 
-    # gather results from all devices
     results_serialized = torch.tensor( bytearray( json.dumps(results).encode('utf-8') ), dtype=torch.uint8 ).to(accelerator.device)
     results_serialized = results_serialized.unsqueeze(0)
     results_serialized = accelerator.pad_across_processes(results_serialized, dim=1, pad_index=0)
@@ -244,7 +242,6 @@ def eval_in_batch(model, prompt_style, tokenizer, save_path = None,
                 print('Ans:', ans)
             print('\n\n\n')
 
-            # deduplication
             if item['prompt'] not in evaluated_instances:
                 results_deduplicated.append(item)
                 evaluated_instances.add(item['prompt'])

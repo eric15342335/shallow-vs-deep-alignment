@@ -1,0 +1,15 @@
+
+\section{Related Work}
+\label{appendix:related}
+
+\textbf{Safety \& Alignment.} A large body of work has examined improved methods for alignment~\citep{rafailov2023direct,ethayarajh2024kto,zou2023representation,bai2022constitutional,ouyang2022training,touvron2023llama-2,team2024gemma}. While we tie alignment approaches to potential downstream jailbreaks, we do so mainly be examining aligned artifacts which go through more rigorous alignment procedures than most other open source models. We rely on the Gemma~\citep{team2024gemma} and Llama-2~\citep{touvron2023llama-2} base and aligned models throughout this work, as the safety alignment built in these two models are closest to the technology applied in frontier proprietary models.
+
+\textbf{Jailbreaking Methods.} A large body of work has examine methods for jailbreaking aligned LLMs, including leveraging finetuning, decoding strategies, prefilling strategies, optimization strategies, and even persuasion~\citep{andriushchenko2024jailbreaking,zou2023universal,qi2023fine,huang2023catastrophic,zeng2024johnny,zhan2023removing,yang2023shadow,gade2023badllama,prefilling-attack,qi2023visual}. Many approaches try to handle jailbreaking through a systems approach by monitoring inputs and outputs with machine learning models~\citep{inan2023llama}, but this is only as good as the monitoring mechanism (which can also be jailbroken)~\citep{break-llama-guard}.
+
+\textbf{Per-token Effects of Fine-tuning and Investigating Fine-tuning Dynamics.} Some works have noted asymmetries in the representation power and utility of different tokens during adaptation. For example, \citet{zhang2024dissecting} show that ``the adaptation of topic and style priors'' during finetuning are ``learned independently and primarily at the beginning of a text sequence.'' \citet{lin2024unlocking} also find that alignment fine-tuning primarily shifts the distribution of alignment only on the first few tokens, but primarily focus on in-context learning remedies. We go deeper into investigating the safety effects of this phenomenon and tie it to downstream attacks and training-based defenses. 
+
+Others have investigated fine-tuning dynamics through interpretability or pruning methods, which is distinct but somewhat related to the approach we take here~\citep{wei2024assessing,jain2023mechanistically}.
+
+\textbf{Connections to Control Theory and Safe Reinforcement Learning.} Our data augmentation approach in Section~\ref{sec:make_alignment_deeper} relates to exploration requirements for optimal learning via policy gradient methods~\citep{agarwal2021theory}, learning recovery policies~\citep{thananjeyan2021recovery}, and safe control theory~\citep{burridge1999sequential,ames2019control}. We, however, leave deeper connections to this literature for future work.
+
+\textbf{Other notions of safety depth.} We also note that safety ``depth'' may be multi-dimensional in addition to token-based depth we describe here. Other considerations for depth would be the ability for models to retain safety properties after adaptation that some have previously discussed~\citep{henderson2023self,wei2024assessing,qi2023fine}.

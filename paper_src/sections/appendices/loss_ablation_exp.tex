@@ -1,0 +1,131 @@
+\section{Ablation Studies on Fine-tuning Attack Experiments}
+\label{appendix:finetuning_ablation}
+
+This section presents more in-depth ablation studies to supplement our studies in Section~\ref{sec:constraining} and Table~\ref{tab:main} there. We also supplement Section~\ref{subsec:evaluate_data_augmentation} by presenting results (Table~\ref{tab:llama-2-augmented-finetuning}) of fine-tuning attacks on the augmented model that we build in Section~\ref{sec:make_alignment_deeper}.
+
+\textbf{Biased Constrains on The Early Tokens Are Important.} The major argument that we make in Section~\ref{sec:constraining} is that we can make the safety alignment more durable against fine-tuning by imposing strong constraints on the initial tokens. Therefore, we set a larger $\beta_t$ to impose stronger constraints in early tokens while only setting a very weak $\beta_t$ for later tokens. Our results in table~\ref{tab:main} indeed verify the improved safety. To further support that this improvement is indeed due to the biased constraints on the early tokens, we perform an ablation where all $\beta_t$ are set to a uniform value. Results are presented in Table~\ref{tab:llama-2-finetuning-ablation-uniform-beta}. As shown, if we set the same small $\beta = 0.1$ for initial tokens as well, the constrained fine-tuning objective can not stop the safety drop. While if we set the large $\beta = 2.0$ for all tokens, it's indeed safe, but the utility of the fine-tuning collapses. Similarly, $\beta = 0.5$ for all tokens neither achieve optimal safety, and the utility is worse than the biased configurations we use in Table~\ref{tab:main}.
+
+\begin{table}[!htbp]
+\caption{Ablation on $\beta_t$ in Eqn~\ref{eqn:soft-sft-fine-tuning-loss}. (Fine-tuning Llama-2-7B-Chat)}
+\centering
+  \resizebox{.95\linewidth}{!}{
+
+\begin{tabular}{c|c|c|c|c|c|c|c}
+\hline
+\multirow{2}*{\shortstack{Datasets}} & & \multirow{2}*{\shortstack{Initial}} & \multirow{2}*{\shortstack{Standard\\SFT}} &  \multirow{2}*{\shortstack{Constrained SFT\\(biased $\beta_t$)}} &  \multirow{2}*{\shortstack{Constrained SFT\\(uniform $\beta = 0.1$)}} & \multirow{2}*{\shortstack{Constrained SFT\\(uniform $\beta = 0.5$)}} & \multirow{2}*{\shortstack{Constrained SFT\\(uniform $\beta = 2.0$)}} \\ 
+&   &  &  &  &   & \\
+\hline
+\multicolumn{8}{c}{\textit{Against Fine-tuning Attacks}}\\
+\hline
+Harmful Examples & ASR   &  1.5\%  &  88.9\% & 4.6\% & 86.2\% & 7.2\% & 0.5\% \\
+\hline
+Identity Shifting & ASR   &  0\% & 
+ 79.5\%  & 8.1\% & 41.6\% & 17.1\% & 3.4\% \\
+%\hline
+%Data Selection~\citep{he2024s} &  ASR  & 3.6\%  &    &    &    &  \\
+\hline
+\multirow{2}*{\shortstack{Backdoor\\Poisoning}}  & ASR (w/o trigger)   & 1.5\%   & 7.6\%  &  1.9\% & 3.5\% & 1.8\% & 1.2\% \\
+ & ASR (w/ trigger)  &  1.7\%  & 90.9\%  & 10.9\%  & 74.4\% & 24.3\% & 1.4\%\\
+\hline
+\multicolumn{8}{c}{\textit{Fine-tuning with Normal Downstream Datasets}}\\
+\hline
+\multirow{2}*{\shortstack{Samsum}} & ASR  & 1.5\% &   23.4\% &  3.2\% & 3.9\% & 3.5\% & 2.4\%  \\
+&  Utility & 25.5\% & 51.7\%  &  50.1\%  & 51.7\% & 49.8\% & 42.5\% \\
+\hline
+\multirow{2}*{\shortstack{SQL Create Context}} & ASR  & 1.5\%  & 15.4\%  & 3.2\%  & 3.3\% & 2.2\% & 2.6\% \\
+&  Utility & 14.9\% & 99.1\%  &  98.5\% &  99.1\% & 98.6\% & 92.6\%  \\
+\hline
+\multirow{2}*{\shortstack{GSM8k}} & ASR  & 1.5\% & 3.3\% &   2.0\%  & 4.0\% & 1.5\% & 2.0\%\\
+&  Utility & 25.5\% & 41.7\% &  37.4\% & 39.4\% & 34.8\% & 2.1\%  \\
+\hline
+\end{tabular}}
+\label{tab:llama-2-finetuning-ablation-uniform-beta}
+\end{table}
+
+
+\textbf{Ablation on The Effects of Warmup Steps.} As we have also noted in Appendix~\ref{appendix-subsubsec:fine-tuning-optimizer}, for Constrained SFT, we use linear warmup for the learning rate in the first 10 fine-tuning steps. This warmup makes sure the constraints imposed by the sigmoid function are gently initialized --- note that, at the start of the fine-tuning, the log ratio $\log~\pi_{\theta} / \pialigned$ in Eqn~\ref{eqn:soft-sft-fine-tuning-loss} is equal to 0. The gradient of the loss at this point is identical to the standard cross-entropy loss~(see the gradient derivation in Appendix~\ref{appendix:loss_gradients}). Therefore, in stochastic gradient descent, there is a risk that early gradients will already break the alignment without respecting the constraints. A few steps of warmup in the early points will make sure the constrains are gently initialized. We present an ablation study on the effect of these 10 steps of warmup in Table~\ref{tab:llama-2-finetuning-ablation-warmup}. We can summarize two key takeaways: 1) the warmup steps are indeed useful to make the constrained SFT to be perform consistently safer; 2) the safety improvement is not solely coming from the warmup steps but mostly from the constrained SFT optimization objective we design. 
+
+
+\begin{table}[!htbp]
+\caption{Ablation on The Effects of The 10 Warmup Steps. (Fine-tuning Llama-2-7B-Chat)}
+\centering
+  \resizebox{.95\linewidth}{!}{
+
+\begin{tabular}{c|c|c|c|c|c|c}
+\hline
+\multirow{2}*{\shortstack{Datasets}} & & \multirow{2}*{\shortstack{Initial}} & \multirow{2}*{\shortstack{Standard\\SFT}} & \multirow{2}*{\shortstack{Standard SFT\\(with warmup)}} & \multirow{2}*{\shortstack{Constrained\\SFT}} & \multirow{2}*{\shortstack{Constrained SFT\\(with warmup)}} \\ 
+&   &  &  &  &   & \\
+\hline
+\multicolumn{7}{c}{\textit{Against Fine-tuning Attacks}}\\
+\hline
+Harmful Examples & ASR   &  1.5\%  &  88.9\%  &  89.4\%  &  29.1\%  & 4.6\%  \\
+\hline
+Identity Shifting & ASR   &  0\% & 
+ 79.5\%   &  44.8\%  &  69.6\%  & 8.1\% \\
+%\hline
+%Data Selection~\citep{he2024s} &  ASR  & 3.6\%  &    &    &    &  \\
+\hline
+\multirow{2}*{\shortstack{Backdoor\\Poisoning}}  & ASR (w/o trigger)   & 1.5\%   & 7.6\%   &  2.7\%   & 2.7\%   &  1.9\% \\
+ & ASR (w/ trigger)  &  1.7\%  & 90.9\%   & 80.5\%   &  9.7\%  & 10.9\%  \\
+\hline
+\multicolumn{7}{c}{\textit{Fine-tuning with Normal Downstream Datasets}}\\
+\hline
+\multirow{2}*{\shortstack{Samsum}} & ASR  & 1.5\% &   23.4\%  &   3.8\% & 23.1\% &  3.2\%  \\
+&  Utility & 25.5\% & 51.7\%  &  51.9\% & 50.2\% &  50.1\%  \\
+\hline
+\multirow{2}*{\shortstack{SQL Create Context}} & ASR  & 1.5\%  & 15.4\%  &  3.3\%  & 2.0\% & 3.2\%   \\
+&  Utility & 14.9\% & 99.1\%  & 99.1\% & 98.6\% &  98.5\% \\
+\hline
+\multirow{2}*{\shortstack{GSM8k}} & ASR  & 1.5\% & 3.3\% & 2.9\%  & 3.1\% &  2.0\%  \\
+&  Utility & 25.5\% & 41.7\% &  41.6\% & 37.2\% & 37.4\% \\
+\hline
+\end{tabular}}
+\label{tab:llama-2-finetuning-ablation-warmup}
+\end{table}
+
+
+
+\textbf{Fine-tuning Attacks on The Augmented Model We Build in Section~\ref{sec:make_alignment_deeper}.} Finally, we also repeat the same set of fine-tuning experiments on the augmented model that we build in Section~\ref{sec:make_alignment_deeper}. Results are presented in Table~\ref{tab:llama-2-augmented-finetuning}. By comparing the results of SFT in Table~\ref{tab:llama-2-augmented-finetuning} and Table~\ref{tab:llama-2-finetuning-ablation-warmup}, we can see the augmented model is generally more robust in multiple fine-tuning cases compared with the non-augmented model. And the constrained fine-tuning objective can also be applied to it, though we didn't observe consistently better results when the two techniques are combined.
+
+
+
+
+
+
+
+\begin{table}[!htbp]
+\caption{Fine-tuning Llama-2-7B-Chat-Augmented That We Built in Section~\ref{sec:make_alignment_deeper}. Refer to Table~\ref{tab:llama-2-finetuning-ablation-warmup} for the results on the non-augmented counterpart, i.e., Llama-2-7B-Chat.}
+\centering
+  \resizebox{.95\linewidth}{!}{
+
+\begin{tabular}{c|c|c|c|c|c}
+\hline
+\multirow{2}*{\shortstack{Datasets}} & &  \multirow{2}*{\shortstack{Standard\\SFT}} & \multirow{2}*{\shortstack{Standard SFT\\(with warmup)}} & \multirow{2}*{\shortstack{Constrained\\SFT}} & \multirow{2}*{\shortstack{Constrained SFT\\(with warmup)}} \\ 
+&   &  &  &  &    \\
+\hline
+\multicolumn{6}{c}{\textit{Against Fine-tuning Attacks}}\\
+\hline
+Harmful Examples & ASR   &  55.2\%  &  51.5\%  &  9.4\%  & 5.2\%  \\
+\hline
+Identity Shifting & ASR   & 
+ 53.9\%   &  37.0\%  &  28.8\%  & 3.0\% \\
+%\hline
+%Data Selection~\citep{he2024s} &  ASR  & 3.6\%  &    &    &    &  \\
+\hline
+\multirow{2}*{\shortstack{Backdoor\\Poisoning}}  & ASR (w/o trigger)   &  3.9\%   &  2.7\%   & 1.8\%   &  0.9\% \\
+ & ASR (w/ trigger)  & 80.0\%   & 83.6\%   &  16.4\%  & 12.7\%  \\
+\hline
+\multicolumn{6}{c}{\textit{Fine-tuning with Normal Downstream Datasets}}\\
+\hline
+\multirow{2}*{\shortstack{Samsum}} & ASR  & 2.1\%  &   0.6\% & 2.1\% &  1.2\%  \\
+&  Utility & 52.4\%  &  51.9\% & 50.4\% &  50.1\%  \\
+\hline
+\multirow{2}*{\shortstack{SQL Create Context}} & ASR  & 3.8\%  &  1.5\%  & 2.0\% & 0.9\%   \\
+&  Utility & 99.0\%  & 99.1\% & 98.4\% &  98.5\% \\
+\hline
+\multirow{2}*{\shortstack{GSM8k}} & ASR  & 0.9\% & 0.9\%  & 0.3\% &  0.3\%  \\
+&  Utility & 42.0\% &  41.2\% & 36.5\% & 36.9\% \\
+\hline
+\end{tabular}}
+\label{tab:llama-2-augmented-finetuning}
+\end{table}
