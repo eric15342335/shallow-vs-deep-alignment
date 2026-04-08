@@ -141,7 +141,8 @@ def eval_safety_in_batch(model, prompt_style, tokenizer, num_prefix_tokens = 0, 
             }
     
     data_loader = accelerator.prepare(DataLoader(dataset, **dataloader_params))
-    model = accelerator.prepare(model)
+    if getattr(model, "hf_device_map", None) is None:
+        model = model.to(accelerator.device)
     model.eval()
     
 

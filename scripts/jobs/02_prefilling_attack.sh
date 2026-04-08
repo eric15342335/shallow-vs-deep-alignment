@@ -8,7 +8,10 @@
 #SBATCH --time=04:00:00
 #SBATCH --output=logs/slurm-%j-prefill-attack.out
 
-cd /userhome/cs/eric310/comp3340/shallow-vs-deep-alignment
+# Remember to run 
+# export CONDA_ENV=your_conda_env_name
+# before you submit this script if you are using conda
+cd /userhome/cs/hac1224/shallow-vs-deep-alignment
 source .venv/bin/activate
 
 # Llama-2-7B-Chat prefilling attack, k = 5, 10, 20, 40 harmful tokens
