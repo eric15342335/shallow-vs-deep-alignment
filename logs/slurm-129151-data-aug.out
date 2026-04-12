@@ -1,0 +1,495 @@
+/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[2026-04-12 15:36:44,155] [INFO] [real_accelerator.py:219:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+W0412 15:36:46.580000 1255492 site-packages/torch/distributed/run.py:792] 
+W0412 15:36:46.580000 1255492 site-packages/torch/distributed/run.py:792] *****************************************
+W0412 15:36:46.580000 1255492 site-packages/torch/distributed/run.py:792] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+W0412 15:36:46.580000 1255492 site-packages/torch/distributed/run.py:792] *****************************************
+/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/transformers/utils/import_utils.py:521: FutureWarning: `is_torch_tpu_available` is deprecated and will be removed in 4.41.0. Please use the `is_torch_xla_available` instead.
+  warnings.warn(
+/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/transformers/utils/import_utils.py:521: FutureWarning: `is_torch_tpu_available` is deprecated and will be removed in 4.41.0. Please use the `is_torch_xla_available` instead.
+  warnings.warn(
+[2026-04-12 15:36:49,801] [INFO] [real_accelerator.py:219:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+[2026-04-12 15:36:49,801] [INFO] [real_accelerator.py:219:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+Warning: The cache directory for DeepSpeed Triton autotune, /userhome/cs/hac1224/.triton/autotune, appears to be on an NFS system. While this is generally acceptable, if you experience slowdowns or hanging when DeepSpeed exits, it is recommended to set the TRITON_CACHE_DIR environment variable to a non-NFS path.
+Warning: The cache directory for DeepSpeed Triton autotune, /userhome/cs/hac1224/.triton/autotune, appears to be on an NFS system. While this is generally acceptable, if you experience slowdowns or hanging when DeepSpeed exits, it is recommended to set the TRITON_CACHE_DIR environment variable to a non-NFS path.
+[2026-04-12 15:36:51,127] [INFO] [comm.py:652:init_distributed] cdb=None
+[2026-04-12 15:36:51,127] [INFO] [comm.py:652:init_distributed] cdb=None
+[2026-04-12 15:36:51,127] [INFO] [comm.py:683:init_distributed] Initializing TorchBackend in DeepSpeed with backend nccl
+/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/transformers/deepspeed.py:23: FutureWarning: transformers.deepspeed module is deprecated and will be removed in a future version. Please import deepspeed modules directly from transformers.integrations
+  warnings.warn(
+args: ScriptArguments(dataset_name='safety_augmentation', model_family='llama2', max_seq_length=512, sft_type='sft', beta=0.1, bias_factor=20, first_token_bias_factor=5, bias_length=5, use_warmup=False, use_anchor=True, anchor_batch_size_per_device=1, safety_augmentation=True)
+torch_dtype: torch.bfloat16
+/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/transformers/deepspeed.py:23: FutureWarning: transformers.deepspeed module is deprecated and will be removed in a future version. Please import deepspeed modules directly from transformers.integrations
+  warnings.warn(
+args: ScriptArguments(dataset_name='safety_augmentation', model_family='llama2', max_seq_length=512, sft_type='sft', beta=0.1, bias_factor=20, first_token_bias_factor=5, bias_length=5, use_warmup=False, use_anchor=True, anchor_batch_size_per_device=1, safety_augmentation=True)
+torch_dtype: torch.bfloat16
+[2026-04-12 15:36:51,270] [INFO] [config.py:733:__init__] Config mesh_device None world_size = 2
+[2026-04-12 15:36:51,318] [INFO] [config.py:733:__init__] Config mesh_device None world_size = 2
+[2026-04-12 15:36:52,259] [INFO] [partition_parameters.py:348:__exit__] finished initializing model - num_params = 291, num_elems = 6.74B
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:00<00:00,  3.08it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:03<00:00,  2.06s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:03<00:00,  1.80s/it]
+Loading checkpoint shards:  50%|█████     | 1/2 [00:14<00:14, 14.68s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:18<00:00,  8.53s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:18<00:00,  9.45s/it]
+Map:   0%|          | 0/256 [00:00<?, ? examples/s]Map: 100%|██████████| 256/256 [00:00<00:00, 20821.46 examples/s]
+Map:   0%|          | 0/256 [00:00<?, ? examples/s]Map: 100%|██████████| 256/256 [00:00<00:00, 23618.45 examples/s]
+Map:   0%|          | 0/256 [00:00<?, ? examples/s]Map: 100%|██████████| 256/256 [00:00<00:00, 21497.19 examples/s]
+Map:   0%|          | 0/256 [00:00<?, ? examples/s]Map: 100%|██████████| 256/256 [00:00<00:00, 23165.45 examples/s]
+Map:   0%|          | 0/256 [00:00<?, ? examples/s]Map: 100%|██████████| 256/256 [00:00<00:00, 20228.36 examples/s]
+Map:   0%|          | 0/256 [00:00<?, ? examples/s]Map: 100%|██████████| 256/256 [00:00<00:00, 23230.61 examples/s]
+Map:   0%|          | 0/256 [00:00<?, ? examples/s]Map: 100%|██████████| 256/256 [00:00<00:00, 20746.23 examples/s]
+Map:   0%|          | 0/256 [00:00<?, ? examples/s]Map: 100%|██████████| 256/256 [00:00<00:00, 22165.97 examples/s]
+Map:   0%|          | 0/20000 [00:00<?, ? examples/s]Map:   0%|          | 0/20000 [00:00<?, ? examples/s]Map:  18%|█▊        | 3669/20000 [00:00<00:00, 36501.19 examples/s]Map:  18%|█▊        | 3505/20000 [00:00<00:00, 34873.27 examples/s]Map:  37%|███▋      | 7376/20000 [00:00<00:00, 36830.71 examples/s]Map:  35%|███▌      | 7092/20000 [00:00<00:00, 35452.57 examples/s]Map:  55%|█████▌    | 11075/20000 [00:00<00:00, 36900.36 examples/s]Map:  54%|█████▎    | 10740/20000 [00:00<00:00, 35917.80 examples/s]Map:  75%|███████▍  | 14923/20000 [00:00<00:00, 37319.41 examples/s]Map:  80%|████████  | 16025/20000 [00:00<00:00, 35575.09 examples/s]Map: 100%|██████████| 20000/20000 [00:00<00:00, 32067.71 examples/s]Map: 100%|██████████| 20000/20000 [00:00<00:00, 33839.62 examples/s]
+Map:   0%|          | 0/20000 [00:00<?, ? examples/s]Map: 100%|██████████| 20000/20000 [00:00<00:00, 30635.25 examples/s]Map: 100%|██████████| 20000/20000 [00:00<00:00, 32453.05 examples/s]
+Map:   0%|          | 0/20000 [00:00<?, ? examples/s]Map:  13%|█▎        | 2693/20000 [00:00<00:00, 26788.43 examples/s]Map:  13%|█▎        | 2639/20000 [00:00<00:00, 26254.26 examples/s]Map:  27%|██▋       | 5490/20000 [00:00<00:00, 27470.98 examples/s]Map:  42%|████▏     | 8364/20000 [00:00<00:00, 28044.43 examples/s]Map:  33%|███▎      | 6558/20000 [00:00<00:00, 26161.22 examples/s]Map:  56%|█████▋    | 11272/20000 [00:00<00:00, 28448.57 examples/s]Map:  46%|████▌     | 9200/20000 [00:00<00:00, 26260.68 examples/s]Map:  71%|███████   | 14144/20000 [00:00<00:00, 28542.25 examples/s]Map:  59%|█████▉    | 11896/20000 [00:00<00:00, 26508.55 examples/s]Map:  85%|████████▌ | 17011/20000 [00:00<00:00, 28583.56 examples/s]Map:  79%|███████▉  | 15875/20000 [00:00<00:00, 26511.58 examples/s]Map: 100%|█████████▉| 19935/20000 [00:00<00:00, 28793.64 examples/s]Map: 100%|██████████| 20000/20000 [00:00<00:00, 26202.26 examples/s]
+anchor_dataset: Dataset({
+    features: ['text'],
+    num_rows: 20000
+})
+Map:  98%|█████████▊| 19609/20000 [00:00<00:00, 25888.56 examples/s]Map: 100%|██████████| 20000/20000 [00:00<00:00, 24422.58 examples/s]
+anchor_dataset: Dataset({
+    features: ['text'],
+    num_rows: 20000
+})
+Map:   0%|          | 0/256 [00:00<?, ? examples/s]Map: 100%|██████████| 256/256 [00:00<00:00, 924.50 examples/s]Map: 100%|██████████| 256/256 [00:00<00:00, 913.05 examples/s]
+Map:   0%|          | 0/20000 [00:00<?, ? examples/s]Map:   5%|▌         | 1000/20000 [00:00<00:08, 2193.31 examples/s]Map:  10%|█         | 2000/20000 [00:00<00:07, 2524.93 examples/s]Map:  15%|█▌        | 3000/20000 [00:01<00:06, 2537.37 examples/s]Map:  20%|██        | 4000/20000 [00:01<00:06, 2611.64 examples/s]Map:  25%|██▌       | 5000/20000 [00:01<00:05, 2675.13 examples/s]Map:  30%|███       | 6000/20000 [00:02<00:05, 2670.85 examples/s]Map:  35%|███▌      | 7000/20000 [00:02<00:04, 2717.32 examples/s]Map:  40%|████      | 8000/20000 [00:03<00:04, 2761.86 examples/s]Map:  45%|████▌     | 9000/20000 [00:03<00:03, 2839.23 examples/s]Map:  50%|█████     | 10000/20000 [00:03<00:03, 2817.46 examples/s]Map:  55%|█████▌    | 11000/20000 [00:03<00:03, 2982.69 examples/s]Map:  60%|██████    | 12000/20000 [00:04<00:02, 3125.82 examples/s]Map:  65%|██████▌   | 13000/20000 [00:04<00:02, 3241.28 examples/s]Map:  70%|███████   | 14000/20000 [00:04<00:01, 3324.89 examples/s]Map:  75%|███████▌  | 15000/20000 [00:05<00:01, 3397.40 examples/s]Map:  80%|████████  | 16000/20000 [00:05<00:01, 3435.48 examples/s]Map:  85%|████████▌ | 17000/20000 [00:05<00:00, 3453.73 examples/s]Map:  90%|█████████ | 18000/20000 [00:05<00:00, 3452.13 examples/s]Map:  95%|█████████▌| 19000/20000 [00:06<00:00, 3453.66 examples/s]Map: 100%|██████████| 20000/20000 [00:06<00:00, 3472.87 examples/s]Map: 100%|██████████| 20000/20000 [00:06<00:00, 3015.04 examples/s]
+Map:   0%|          | 0/256 [00:00<?, ? examples/s]AdamW (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: None
+    lr: 2e-05
+    maximize: False
+    weight_decay: 0.0
+
+Parameter Group 1
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: None
+    lr: 2e-05
+    maximize: False
+    weight_decay: 0.0
+)
+AdamW (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: None
+    initial_lr: 2e-05
+    lr: 2e-05
+    maximize: False
+    weight_decay: 0.0
+
+Parameter Group 1
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: None
+    initial_lr: 2e-05
+    lr: 2e-05
+    maximize: False
+    weight_decay: 0.0
+)
+Map: 100%|██████████| 256/256 [00:00<00:00, 1086.39 examples/s]Map: 100%|██████████| 256/256 [00:00<00:00, 1069.29 examples/s]
+Map:   0%|          | 0/20000 [00:00<?, ? examples/s]Parameter Offload: Total persistent parameters: 266240 in 65 params
+Map:   5%|▌         | 1000/20000 [00:00<00:08, 2197.46 examples/s]Map:  10%|█         | 2000/20000 [00:00<00:06, 2756.50 examples/s]Map:  15%|█▌        | 3000/20000 [00:01<00:06, 2775.11 examples/s]Map:  20%|██        | 4000/20000 [00:01<00:05, 2796.44 examples/s]Map:  25%|██▌       | 5000/20000 [00:01<00:05, 2839.90 examples/s]Map:  30%|███       | 6000/20000 [00:02<00:04, 2904.10 examples/s]Map:  35%|███▌      | 7000/20000 [00:02<00:04, 2881.01 examples/s]Map:  40%|████      | 8000/20000 [00:02<00:04, 2884.51 examples/s]Map:  45%|████▌     | 9000/20000 [00:03<00:03, 2977.79 examples/s]Map:  50%|█████     | 10000/20000 [00:03<00:03, 3026.16 examples/s]Map:  55%|█████▌    | 11000/20000 [00:03<00:02, 3138.18 examples/s]Map:  60%|██████    | 12000/20000 [00:04<00:02, 3268.29 examples/s]Map:  65%|██████▌   | 13000/20000 [00:04<00:02, 3338.51 examples/s]Map:  70%|███████   | 14000/20000 [00:04<00:01, 3390.24 examples/s]Map:  75%|███████▌  | 15000/20000 [00:04<00:01, 3445.23 examples/s]Map:  80%|████████  | 16000/20000 [00:05<00:01, 3480.84 examples/s]Map:  85%|████████▌ | 17000/20000 [00:05<00:00, 3454.13 examples/s]Map:  90%|█████████ | 18000/20000 [00:05<00:00, 3466.92 examples/s]Map:  95%|█████████▌| 19000/20000 [00:06<00:00, 3455.03 examples/s]Map: 100%|██████████| 20000/20000 [00:06<00:00, 3483.14 examples/s]Map: 100%|██████████| 20000/20000 [00:06<00:00, 3127.81 examples/s]
+AdamW (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: None
+    lr: 2e-05
+    maximize: False
+    weight_decay: 0.0
+
+Parameter Group 1
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: None
+    lr: 2e-05
+    maximize: False
+    weight_decay: 0.0
+)
+AdamW (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: None
+    initial_lr: 2e-05
+    lr: 2e-05
+    maximize: False
+    weight_decay: 0.0
+
+Parameter Group 1
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: None
+    initial_lr: 2e-05
+    lr: 2e-05
+    maximize: False
+    weight_decay: 0.0
+)
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/userhome/cs/hac1224/shallow-vs-deep-alignment/finetune.py", line 190, in <module>
+[rank0]:     trainer.train()
+[rank0]:   File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/transformers/trainer.py", line 1859, in train
+[rank0]:     return inner_training_loop(
+[rank0]:            ^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/userhome/cs/hac1224/shallow-vs-deep-alignment/finetuning_buckets/trainer/trainer.py", line 1510, in _inner_training_loop
+[rank0]:     model, self.optimizer = self.accelerator.prepare(self.model, self.optimizer)
+[rank0]:                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/accelerate/accelerator.py", line 1548, in prepare
+[rank0]:     result = self._prepare_deepspeed(*args)
+[rank0]:              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/accelerate/accelerator.py", line 2427, in _prepare_deepspeed
+[rank0]:     engine, optimizer, _, lr_scheduler = ds_initialize(**kwargs)
+[rank0]:                                          ^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/deepspeed/__init__.py", line 193, in initialize
+[rank0]:     engine = DeepSpeedEngine(args=args,
+[rank0]:              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/deepspeed/runtime/engine.py", line 313, in __init__
+[rank0]:     self._configure_optimizer(optimizer, model_parameters)
+[rank0]:   File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/deepspeed/runtime/engine.py", line 1302, in _configure_optimizer
+[rank0]:     self.optimizer = self._configure_zero_optimizer(basic_optimizer)
+[rank0]:                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/deepspeed/runtime/engine.py", line 1626, in _configure_zero_optimizer
+[rank0]:     optimizer = DeepSpeedZeroOptimizer_Stage3(
+[rank0]:                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/deepspeed/runtime/zero/stage3.py", line 395, in __init__
+[rank0]:     self._setup_for_real_optimizer()
+[rank0]:   File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/deepspeed/runtime/zero/stage3.py", line 534, in _setup_for_real_optimizer
+[rank0]:     self.grad_partitions_flat_buffer: Tensor = torch.zeros(sum(p.partition_numel() for p in all_params),
+[rank0]:                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]: torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 6.28 GiB. GPU 0 has a total capacity of 23.68 GiB of which 47.19 MiB is free. Including non-PyTorch memory, this process has 23.63 GiB memory in use. Of the allocated memory 19.82 GiB is allocated by PyTorch, and 3.34 GiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[rank1]: Traceback (most recent call last):
+[rank1]:   File "/userhome/cs/hac1224/shallow-vs-deep-alignment/finetune.py", line 190, in <module>
+[rank1]:     trainer.train()
+[rank1]:   File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/transformers/trainer.py", line 1859, in train
+[rank1]:     return inner_training_loop(
+[rank1]:            ^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/userhome/cs/hac1224/shallow-vs-deep-alignment/finetuning_buckets/trainer/trainer.py", line 1510, in _inner_training_loop
+[rank1]:     model, self.optimizer = self.accelerator.prepare(self.model, self.optimizer)
+[rank1]:                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/accelerate/accelerator.py", line 1548, in prepare
+[rank1]:     result = self._prepare_deepspeed(*args)
+[rank1]:              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/accelerate/accelerator.py", line 2427, in _prepare_deepspeed
+[rank1]:     engine, optimizer, _, lr_scheduler = ds_initialize(**kwargs)
+[rank1]:                                          ^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/deepspeed/__init__.py", line 193, in initialize
+[rank1]:     engine = DeepSpeedEngine(args=args,
+[rank1]:              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/deepspeed/runtime/engine.py", line 313, in __init__
+[rank1]:     self._configure_optimizer(optimizer, model_parameters)
+[rank1]:   File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/deepspeed/runtime/engine.py", line 1302, in _configure_optimizer
+[rank1]:     self.optimizer = self._configure_zero_optimizer(basic_optimizer)
+[rank1]:                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/deepspeed/runtime/engine.py", line 1626, in _configure_zero_optimizer
+[rank1]:     optimizer = DeepSpeedZeroOptimizer_Stage3(
+[rank1]:                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/deepspeed/runtime/zero/stage3.py", line 395, in __init__
+[rank1]:     self._setup_for_real_optimizer()
+[rank1]:   File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/deepspeed/runtime/zero/stage3.py", line 534, in _setup_for_real_optimizer
+[rank1]:     self.grad_partitions_flat_buffer: Tensor = torch.zeros(sum(p.partition_numel() for p in all_params),
+[rank1]:                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]: torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 6.28 GiB. GPU 1 has a total capacity of 23.68 GiB of which 47.19 MiB is free. Including non-PyTorch memory, this process has 23.63 GiB memory in use. Of the allocated memory 19.82 GiB is allocated by PyTorch, and 3.34 GiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[rank0]:[W412 15:37:33.426124110 ProcessGroupNCCL.cpp:1496] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+W0412 15:37:34.789000 1255492 site-packages/torch/distributed/elastic/multiprocessing/api.py:897] Sending process 1255539 closing signal SIGTERM
+E0412 15:37:34.854000 1255492 site-packages/torch/distributed/elastic/multiprocessing/api.py:869] failed (exitcode: 1) local_rank: 0 (pid: 1255538) of binary: /userhome/cs/hac1224/anaconda3/envs/comp3340/bin/python3.12
+Warning: The cache directory for DeepSpeed Triton autotune, /userhome/cs/hac1224/.triton/autotune, appears to be on an NFS system. While this is generally acceptable, if you experience slowdowns or hanging when DeepSpeed exits, it is recommended to set the TRITON_CACHE_DIR environment variable to a non-NFS path.
+Traceback (most recent call last):
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/bin/accelerate", line 6, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/accelerate/commands/accelerate_cli.py", line 50, in main
+    args.func(args)
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/accelerate/commands/launch.py", line 1390, in launch_command
+    deepspeed_launcher(args)
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/accelerate/commands/launch.py", line 1076, in deepspeed_launcher
+    distrib_run.run(args)
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/torch/distributed/run.py", line 909, in run
+    elastic_launch(
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 138, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 269, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+finetune.py FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-04-12_15:37:34
+  host      : gpu-3090-201.gpufarm1.cs.hku.hk
+  rank      : 0 (local_rank: 0)
+  exitcode  : 1 (pid: 1255538)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================
+/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+The following values were not passed to `accelerate launch` and had defaults used instead:
+	`--num_machines` was set to a value of `1`
+	`--mixed_precision` was set to a value of `'no'`
+	`--dynamo_backend` was set to a value of `'no'`
+To avoid this warning pass in values for each of the problematic parameters or run `accelerate config`.
+/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+torch_dtype: torch.bfloat16
+Traceback (most recent call last):
+  File "/userhome/cs/hac1224/shallow-vs-deep-alignment/eval_safety.py", line 71, in <module>
+    model, tokenizer = get_model.get_model(model_config.model_name_or_path, model_kwargs, model_family=args.model_family, padding_side="left")
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/userhome/cs/hac1224/shallow-vs-deep-alignment/finetuning_buckets/models/get_model.py", line 5, in get_model
+    return llama2_initializer(model_name_or_path, model_kwargs, padding_side=padding_side)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/userhome/cs/hac1224/shallow-vs-deep-alignment/finetuning_buckets/models/model_families/llama2.py", line 9, in initializer
+    model = AutoModelForCausalLM.from_pretrained(model_name_or_path, **model_kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/transformers/models/auto/auto_factory.py", line 523, in from_pretrained
+    config, kwargs = AutoConfig.from_pretrained(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/transformers/models/auto/configuration_auto.py", line 928, in from_pretrained
+    config_dict, unused_kwargs = PretrainedConfig.get_config_dict(pretrained_model_name_or_path, **kwargs)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/transformers/configuration_utils.py", line 631, in get_config_dict
+    config_dict, kwargs = cls._get_config_dict(pretrained_model_name_or_path, **kwargs)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/transformers/configuration_utils.py", line 686, in _get_config_dict
+    resolved_config_file = cached_file(
+                           ^^^^^^^^^^^^
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/transformers/utils/hub.py", line 369, in cached_file
+    raise EnvironmentError(
+OSError: logs/data_augmentation/Llama-2-7b-chat-augmented does not appear to have a file named config.json. Checkout 'https://huggingface.co/logs/data_augmentation/Llama-2-7b-chat-augmented/tree/main' for available files.
+Traceback (most recent call last):
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/bin/accelerate", line 6, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/accelerate/commands/accelerate_cli.py", line 50, in main
+    args.func(args)
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/accelerate/commands/launch.py", line 1405, in launch_command
+    simple_launcher(args)
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/accelerate/commands/launch.py", line 993, in simple_launcher
+    raise subprocess.CalledProcessError(returncode=process.returncode, cmd=cmd)
+subprocess.CalledProcessError: Command '['/userhome/cs/hac1224/anaconda3/envs/comp3340/bin/python3.12', 'eval_safety.py', '--model_name_or_path=logs/data_augmentation/Llama-2-7b-chat-augmented', '--torch_dtype=bfloat16', '--safety_bench=hex-phi', '--model_family=llama2', '--prompt_style=llama2', '--evaluator=none', '--save_path=logs/data_augmentation/llama2_chat_augmented_no_prefilling.json', '--eval_template=null']' returned non-zero exit status 1.
+/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+The following values were not passed to `accelerate launch` and had defaults used instead:
+	`--num_machines` was set to a value of `1`
+	`--mixed_precision` was set to a value of `'no'`
+	`--dynamo_backend` was set to a value of `'no'`
+To avoid this warning pass in values for each of the problematic parameters or run `accelerate config`.
+/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+torch_dtype: torch.bfloat16
+Traceback (most recent call last):
+  File "/userhome/cs/hac1224/shallow-vs-deep-alignment/eval_safety.py", line 71, in <module>
+    model, tokenizer = get_model.get_model(model_config.model_name_or_path, model_kwargs, model_family=args.model_family, padding_side="left")
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/userhome/cs/hac1224/shallow-vs-deep-alignment/finetuning_buckets/models/get_model.py", line 5, in get_model
+    return llama2_initializer(model_name_or_path, model_kwargs, padding_side=padding_side)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/userhome/cs/hac1224/shallow-vs-deep-alignment/finetuning_buckets/models/model_families/llama2.py", line 9, in initializer
+    model = AutoModelForCausalLM.from_pretrained(model_name_or_path, **model_kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/transformers/models/auto/auto_factory.py", line 523, in from_pretrained
+    config, kwargs = AutoConfig.from_pretrained(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/transformers/models/auto/configuration_auto.py", line 928, in from_pretrained
+    config_dict, unused_kwargs = PretrainedConfig.get_config_dict(pretrained_model_name_or_path, **kwargs)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/transformers/configuration_utils.py", line 631, in get_config_dict
+    config_dict, kwargs = cls._get_config_dict(pretrained_model_name_or_path, **kwargs)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/transformers/configuration_utils.py", line 686, in _get_config_dict
+    resolved_config_file = cached_file(
+                           ^^^^^^^^^^^^
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/transformers/utils/hub.py", line 369, in cached_file
+    raise EnvironmentError(
+OSError: logs/data_augmentation/Llama-2-7b-chat-augmented does not appear to have a file named config.json. Checkout 'https://huggingface.co/logs/data_augmentation/Llama-2-7b-chat-augmented/tree/main' for available files.
+Traceback (most recent call last):
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/bin/accelerate", line 6, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/accelerate/commands/accelerate_cli.py", line 50, in main
+    args.func(args)
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/accelerate/commands/launch.py", line 1405, in launch_command
+    simple_launcher(args)
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/accelerate/commands/launch.py", line 993, in simple_launcher
+    raise subprocess.CalledProcessError(returncode=process.returncode, cmd=cmd)
+subprocess.CalledProcessError: Command '['/userhome/cs/hac1224/anaconda3/envs/comp3340/bin/python3.12', 'eval_safety.py', '--model_name_or_path=logs/data_augmentation/Llama-2-7b-chat-augmented', '--torch_dtype=bfloat16', '--safety_bench=hex-phi_with_harmful_prefix', '--model_family=llama2', '--prompt_style=llama2', '--evaluator=none', '--save_path=logs/data_augmentation/llama2_chat_augmented_prefilled_5_harmful_tokens.json', '--eval_template=null', '--num_perfix_tokens=5']' returned non-zero exit status 1.
+/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+The following values were not passed to `accelerate launch` and had defaults used instead:
+	`--num_machines` was set to a value of `1`
+	`--mixed_precision` was set to a value of `'no'`
+	`--dynamo_backend` was set to a value of `'no'`
+To avoid this warning pass in values for each of the problematic parameters or run `accelerate config`.
+/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+torch_dtype: torch.bfloat16
+Traceback (most recent call last):
+  File "/userhome/cs/hac1224/shallow-vs-deep-alignment/eval_safety.py", line 71, in <module>
+    model, tokenizer = get_model.get_model(model_config.model_name_or_path, model_kwargs, model_family=args.model_family, padding_side="left")
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/userhome/cs/hac1224/shallow-vs-deep-alignment/finetuning_buckets/models/get_model.py", line 5, in get_model
+    return llama2_initializer(model_name_or_path, model_kwargs, padding_side=padding_side)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/userhome/cs/hac1224/shallow-vs-deep-alignment/finetuning_buckets/models/model_families/llama2.py", line 9, in initializer
+    model = AutoModelForCausalLM.from_pretrained(model_name_or_path, **model_kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/transformers/models/auto/auto_factory.py", line 523, in from_pretrained
+    config, kwargs = AutoConfig.from_pretrained(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/transformers/models/auto/configuration_auto.py", line 928, in from_pretrained
+    config_dict, unused_kwargs = PretrainedConfig.get_config_dict(pretrained_model_name_or_path, **kwargs)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/transformers/configuration_utils.py", line 631, in get_config_dict
+    config_dict, kwargs = cls._get_config_dict(pretrained_model_name_or_path, **kwargs)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/transformers/configuration_utils.py", line 686, in _get_config_dict
+    resolved_config_file = cached_file(
+                           ^^^^^^^^^^^^
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/transformers/utils/hub.py", line 369, in cached_file
+    raise EnvironmentError(
+OSError: logs/data_augmentation/Llama-2-7b-chat-augmented does not appear to have a file named config.json. Checkout 'https://huggingface.co/logs/data_augmentation/Llama-2-7b-chat-augmented/tree/main' for available files.
+Traceback (most recent call last):
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/bin/accelerate", line 6, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/accelerate/commands/accelerate_cli.py", line 50, in main
+    args.func(args)
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/accelerate/commands/launch.py", line 1405, in launch_command
+    simple_launcher(args)
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/accelerate/commands/launch.py", line 993, in simple_launcher
+    raise subprocess.CalledProcessError(returncode=process.returncode, cmd=cmd)
+subprocess.CalledProcessError: Command '['/userhome/cs/hac1224/anaconda3/envs/comp3340/bin/python3.12', 'eval_safety.py', '--model_name_or_path=logs/data_augmentation/Llama-2-7b-chat-augmented', '--torch_dtype=bfloat16', '--safety_bench=hex-phi_with_harmful_prefix', '--model_family=llama2', '--prompt_style=llama2', '--evaluator=none', '--save_path=logs/data_augmentation/llama2_chat_augmented_prefilled_10_harmful_tokens.json', '--eval_template=null', '--num_perfix_tokens=10']' returned non-zero exit status 1.
+/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+The following values were not passed to `accelerate launch` and had defaults used instead:
+	`--num_machines` was set to a value of `1`
+	`--mixed_precision` was set to a value of `'no'`
+	`--dynamo_backend` was set to a value of `'no'`
+To avoid this warning pass in values for each of the problematic parameters or run `accelerate config`.
+/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+torch_dtype: torch.bfloat16
+Traceback (most recent call last):
+  File "/userhome/cs/hac1224/shallow-vs-deep-alignment/eval_safety.py", line 71, in <module>
+    model, tokenizer = get_model.get_model(model_config.model_name_or_path, model_kwargs, model_family=args.model_family, padding_side="left")
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/userhome/cs/hac1224/shallow-vs-deep-alignment/finetuning_buckets/models/get_model.py", line 5, in get_model
+    return llama2_initializer(model_name_or_path, model_kwargs, padding_side=padding_side)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/userhome/cs/hac1224/shallow-vs-deep-alignment/finetuning_buckets/models/model_families/llama2.py", line 9, in initializer
+    model = AutoModelForCausalLM.from_pretrained(model_name_or_path, **model_kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/transformers/models/auto/auto_factory.py", line 523, in from_pretrained
+    config, kwargs = AutoConfig.from_pretrained(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/transformers/models/auto/configuration_auto.py", line 928, in from_pretrained
+    config_dict, unused_kwargs = PretrainedConfig.get_config_dict(pretrained_model_name_or_path, **kwargs)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/transformers/configuration_utils.py", line 631, in get_config_dict
+    config_dict, kwargs = cls._get_config_dict(pretrained_model_name_or_path, **kwargs)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/transformers/configuration_utils.py", line 686, in _get_config_dict
+    resolved_config_file = cached_file(
+                           ^^^^^^^^^^^^
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/transformers/utils/hub.py", line 369, in cached_file
+    raise EnvironmentError(
+OSError: logs/data_augmentation/Llama-2-7b-chat-augmented does not appear to have a file named config.json. Checkout 'https://huggingface.co/logs/data_augmentation/Llama-2-7b-chat-augmented/tree/main' for available files.
+Traceback (most recent call last):
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/bin/accelerate", line 6, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/accelerate/commands/accelerate_cli.py", line 50, in main
+    args.func(args)
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/accelerate/commands/launch.py", line 1405, in launch_command
+    simple_launcher(args)
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/accelerate/commands/launch.py", line 993, in simple_launcher
+    raise subprocess.CalledProcessError(returncode=process.returncode, cmd=cmd)
+subprocess.CalledProcessError: Command '['/userhome/cs/hac1224/anaconda3/envs/comp3340/bin/python3.12', 'eval_safety.py', '--model_name_or_path=logs/data_augmentation/Llama-2-7b-chat-augmented', '--torch_dtype=bfloat16', '--safety_bench=hex-phi_with_harmful_prefix', '--model_family=llama2', '--prompt_style=llama2', '--evaluator=none', '--save_path=logs/data_augmentation/llama2_chat_augmented_prefilled_20_harmful_tokens.json', '--eval_template=null', '--num_perfix_tokens=20']' returned non-zero exit status 1.
+/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+The following values were not passed to `accelerate launch` and had defaults used instead:
+	`--num_machines` was set to a value of `1`
+	`--mixed_precision` was set to a value of `'no'`
+	`--dynamo_backend` was set to a value of `'no'`
+To avoid this warning pass in values for each of the problematic parameters or run `accelerate config`.
+/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+torch_dtype: torch.bfloat16
+Traceback (most recent call last):
+  File "/userhome/cs/hac1224/shallow-vs-deep-alignment/eval_safety.py", line 71, in <module>
+    model, tokenizer = get_model.get_model(model_config.model_name_or_path, model_kwargs, model_family=args.model_family, padding_side="left")
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/userhome/cs/hac1224/shallow-vs-deep-alignment/finetuning_buckets/models/get_model.py", line 5, in get_model
+    return llama2_initializer(model_name_or_path, model_kwargs, padding_side=padding_side)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/userhome/cs/hac1224/shallow-vs-deep-alignment/finetuning_buckets/models/model_families/llama2.py", line 9, in initializer
+    model = AutoModelForCausalLM.from_pretrained(model_name_or_path, **model_kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/transformers/models/auto/auto_factory.py", line 523, in from_pretrained
+    config, kwargs = AutoConfig.from_pretrained(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/transformers/models/auto/configuration_auto.py", line 928, in from_pretrained
+    config_dict, unused_kwargs = PretrainedConfig.get_config_dict(pretrained_model_name_or_path, **kwargs)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/transformers/configuration_utils.py", line 631, in get_config_dict
+    config_dict, kwargs = cls._get_config_dict(pretrained_model_name_or_path, **kwargs)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/transformers/configuration_utils.py", line 686, in _get_config_dict
+    resolved_config_file = cached_file(
+                           ^^^^^^^^^^^^
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/transformers/utils/hub.py", line 369, in cached_file
+    raise EnvironmentError(
+OSError: logs/data_augmentation/Llama-2-7b-chat-augmented does not appear to have a file named config.json. Checkout 'https://huggingface.co/logs/data_augmentation/Llama-2-7b-chat-augmented/tree/main' for available files.
+Traceback (most recent call last):
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/bin/accelerate", line 6, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/accelerate/commands/accelerate_cli.py", line 50, in main
+    args.func(args)
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/accelerate/commands/launch.py", line 1405, in launch_command
+    simple_launcher(args)
+  File "/userhome/cs/hac1224/anaconda3/envs/comp3340/lib/python3.12/site-packages/accelerate/commands/launch.py", line 993, in simple_launcher
+    raise subprocess.CalledProcessError(returncode=process.returncode, cmd=cmd)
+subprocess.CalledProcessError: Command '['/userhome/cs/hac1224/anaconda3/envs/comp3340/bin/python3.12', 'eval_safety.py', '--model_name_or_path=logs/data_augmentation/Llama-2-7b-chat-augmented', '--torch_dtype=bfloat16', '--safety_bench=hex-phi_with_harmful_prefix', '--model_family=llama2', '--prompt_style=llama2', '--evaluator=none', '--save_path=logs/data_augmentation/llama2_chat_augmented_prefilled_40_harmful_tokens.json', '--eval_template=null', '--num_perfix_tokens=40']' returned non-zero exit status 1.
