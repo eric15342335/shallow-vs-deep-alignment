@@ -1,0 +1,8 @@
+accelerate launch --config_file=accelerate_configs/custom2.yaml \
+  finetune.py --model_name_or_path='ckpts/Llama-2-7b-chat-fp16' \
+  --dataset_name='aoa' --model_family='llama2' --learning_rate=2e-5 \
+  --per_device_train_batch_size=1 --gradient_accumulation_steps=16 \
+  --output_dir='logs/fine-tuning-attack/aoa/llama2/sft' \
+  --logging_steps=1 --num_train_epochs=25 --gradient_checkpointing --report_to=none \
+  --torch_dtype=bfloat16 --bf16=True --bf16_full_eval=True --save_strategy='no' \
+  --sft_type='sft' --use_warmup=True
