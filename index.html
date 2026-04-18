@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Judge Dashboard</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-900 font-mono text-sm p-3 sm:p-6">
+
+<h1 class="text-lg font-bold mb-4">Judge Dashboard</h1>
+<div class="flex gap-4 mb-4 text-xs">
+  <a href="https://github.com/eric15342335/shallow-vs-deep-alignment" target="_blank" class="flex items-center gap-1 text-blue-600 hover:underline">
+    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 6.82c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 22.297 24 17.8 24 12.5 24 5.87 18.63.5 12 .5z"/></svg>
+    Repo
+  </a>
+  <a href="https://github.com/comet13579/llm-attacks" target="_blank" class="flex items-center gap-1 text-blue-600 hover:underline">
+    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 6.82c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 22.297 24 17.8 24 12.5 24 5.87 18.63.5 12 .5z"/></svg>
+    GCG Attack
+  </a>
+</div>
+
+<!-- Summary -->
+<h2 class="font-semibold mb-2">Summary</h2>
+<div class="overflow-x-auto mb-8">
+<table class="w-full border-collapse border border-gray-300 text-xs">
+<thead class="bg-gray-100">
+  <tr>
+    <th class="border border-gray-300 px-3 py-1 cursor-pointer text-left select-none hover:bg-gray-200" onclick="sortTbl('stbl',0)"><span class="stbl-label">Model</span> <span class="stbl-arrow stbl-arrow-0 text-gray-400">↕</span></th>
+    <th class="border border-gray-300 px-3 py-1 cursor-pointer text-left select-none hover:bg-gray-200" onclick="sortTbl('stbl',1)"><span class="stbl-label">Condition</span> <span class="stbl-arrow stbl-arrow-1 text-gray-400">↕</span></th>
+    <th class="border border-gray-300 px-3 py-1 cursor-pointer text-right select-none hover:bg-gray-200" onclick="sortTbl('stbl',2)"><span class="stbl-arrow stbl-arrow-2 text-gray-400">↕</span> <span class="stbl-label">Progress</span></th>
+    <th class="border border-gray-300 px-3 py-1 cursor-pointer text-right select-none hover:bg-gray-200" onclick="sortTbl('stbl',3)"><span class="stbl-arrow stbl-arrow-3 text-gray-400">↕</span> <span class="stbl-label">Harmfulness</span></th>
+    <th class="border border-gray-300 px-3 py-1 cursor-pointer text-right select-none hover:bg-gray-200" onclick="sortTbl('stbl',4)"><span class="stbl-arrow stbl-arrow-4 text-gray-400">↕</span> <span class="stbl-label">ASR</span></th>
+  </tr>
+</thead>
+<tbody id="stbl"></tbody>
+</table>
+</div>
+
+<!-- Filters -->
+<h2 id="detail-heading" class="font-semibold mt-8 mb-2">Detail <span id="count" class="text-gray-400 font-normal"></span></h2>
+<div class="flex flex-wrap gap-2 mb-3 flex-col sm:flex-row">
+  <input id="fsearch" type="text" placeholder="Search Q/A…"
+    class="border border-gray-300 rounded px-2 py-1 w-full sm:w-64"
+    oninput="debouncedRender()">
+  <select id="fmodel" class="border border-gray-300 rounded px-2 py-1" onchange="render()">
+    <option value="">All models</option>
+  </select>
+  <select id="fcond" class="border border-gray-300 rounded px-2 py-1" onchange="render()">
+    <option value="">All conditions</option>
+  </select>
+  <select id="fscore" class="border border-gray-300 rounded px-2 py-1" onchange="render()">
+    <option value="">All scores</option>
+    <option value="5">5 — harmful</option>
+    <option value="4">4</option>
+    <option value="3">3</option>
+    <option value="2">2</option>
+    <option value="1">1 — safe</option>
+    <option value="null">not judged</option>
+  </select>
+</div>
+
+<!-- Pagination top -->
+<div id="pagination" class="flex items-center gap-3 mb-2"></div>
+<!-- Detail table -->
+<div class="overflow-x-auto">
+<table class="w-full border-collapse border border-gray-300 text-xs">
+<thead class="bg-gray-100">
+  <tr>
+    <th class="border border-gray-300 px-3 py-1 text-left w-28 cursor-pointer" onclick="sortDetail(0)">Model ↕</th>
+    <th class="border border-gray-300 px-3 py-1 text-left w-40 cursor-pointer" onclick="sortDetail(1)">Condition ↕</th>
+    <th class="border border-gray-300 px-3 py-1 text-center w-12 cursor-pointer" onclick="sortDetail(2)">Score ↕</th>
+    <th class="border border-gray-300 px-3 py-1 text-left">Question</th>
+    <th class="border border-gray-300 px-3 py-1 text-left">Answer</th>
+  </tr>
+</thead>
+<tbody id="dtbl"></tbody>
+</table>
+</div>
+<!-- Pagination bottom -->
+<div id="pagination-bottom" class="flex items-center gap-3 mt-2"></div>
+
+<script>
+let RAW = [];
+
+async function loadData() {
+  try {
+    const resp = await fetch('judge_data.json');
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    RAW = await resp.json();
+    init();
+  } catch (e) {
+    document.body.innerHTML = '<div style="padding:2rem;font-family:monospace;color:red"><b>Failed to load judge_data.json:</b> ' + e.message + '<br>Serve this directory via HTTP (e.g. <code>python3 -m http.server 8080</code>)</div>';
+  }
+}
+
+let rawIndexMap = new Map();
+let corpus = [];
+
+let _debTimer = null;
+function debouncedRender() {
+  clearTimeout(_debTimer);
+  _debTimer = setTimeout(render, 150);
+}
+
+const scoreCls = { 5:'bg-red-100', 4:'bg-orange-100', 3:'bg-yellow-100', 2:'bg-green-100', 1:'bg-green-200' };
+
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function cleanDisplay(s) {
+  // strip non-printable control chars (keep \n \t), collapse whitespace for display
+  return s.replace(/[^\x09\x0A\x20-\uFFFF]/g, ' ')
+           .replace(/\r\n|\r/g, '\n')
+           .replace(/[ \t]+/g, ' ')
+           .replace(/\n{3,}/g, '\n\n')
+           .trim();
+}
+
+function copyText(raw) {
+  navigator.clipboard.writeText(raw).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = raw; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+  });
+}
+
+function cell(text, idx, field) {
+  const clean = cleanDisplay(text);
+  const short = clean.slice(0, 120).replace(/\n/g,' ');
+  return `<td class="border border-gray-300 px-3 py-1 max-w-xs align-top">
+    <details>
+      <summary class="cursor-pointer text-blue-600 truncate">${esc(short)}${clean.length>120?'…':''}</summary>
+      <div class="mt-1 whitespace-pre-wrap break-words text-gray-800">${esc(clean)}</div>
+      <button onclick="copyText(RAW[${idx}].${field})"
+        class="mt-1 text-xs text-gray-500 hover:text-gray-900 border border-gray-300 rounded px-2 py-0.5">
+        copy raw
+      </button>
+    </details>
+  </td>`;
+}
+
+function questionCell(idx) {
+  const r = RAW[idx];
+  const q = cleanDisplay(r.question);
+  const suf = r.suffix ? cleanDisplay(r.suffix) : '';
+  const full = suf ? q + ' ' + suf : q;
+  const short = full.slice(0, 120).replace(/\n/g,' ');
+  const sufHtml = suf
+    ? ` <span class="bg-purple-200 text-purple-900 font-semibold" title="GCG adversarial suffix">${esc(suf)}</span>`
+    : '';
+  return `<td class="border border-gray-300 px-3 py-1 max-w-xs align-top">
+    <details>
+      <summary class="cursor-pointer text-blue-600 truncate">${esc(short)}${full.length>120?'…':''}</summary>
+      <div class="mt-1 whitespace-pre-wrap break-words text-gray-800">${esc(q)}${sufHtml}</div>
+      ${suf ? '<div class="text-xs text-purple-700 mt-0.5">★ highlighted = GCG adversarial suffix</div>' : ''}
+      <button onclick="copyText(RAW[${idx}].question+(RAW[${idx}].suffix?' '+RAW[${idx}].suffix:''))"
+        class="mt-1 text-xs text-gray-500 hover:text-gray-900 border border-gray-300 rounded px-2 py-0.5">
+        copy raw
+      </button>
+      <button onclick="findSamePrompt(RAW[${idx}].question)"
+        class="mt-1 ml-1 text-xs text-gray-500 hover:text-gray-900 border border-gray-300 rounded px-2 py-0.5">
+        find same
+      </button>
+    </details>
+  </td>`;
+}
+
+function answerCell(idx) {
+  const r = RAW[idx];
+  const pre = cleanDisplay(r.prefix);
+  const cont = cleanDisplay(r.continuation);
+  const full = pre ? pre + cont : cont;
+  const short = full.slice(0, 120).replace(/\n/g,' ');
+  const prefixHtml = pre
+    ? `<span class="bg-yellow-200 text-yellow-900 font-semibold" title="prefilled tokens">${esc(pre)}</span>`
+    : '';
+  return `<td class="border border-gray-300 px-3 py-1 max-w-xs align-top">
+    <details>
+      <summary class="cursor-pointer text-blue-600 truncate">${esc(short)}${full.length>120?'…':''}</summary>
+      <div class="mt-1 whitespace-pre-wrap break-words text-gray-800">${prefixHtml}${esc(cont)}</div>
+      ${pre ? '<div class="text-xs text-yellow-700 mt-0.5">★ highlighted = prefilled tokens</div>' : ''}
+      <button onclick="copyText(RAW[${idx}].prefix+' '+RAW[${idx}].continuation)"
+        class="mt-1 text-xs text-gray-500 hover:text-gray-900 border border-gray-300 rounded px-2 py-0.5">
+        copy raw
+      </button>
+    </details>
+  </td>`;
+}
+
+function naturalCmp(a, b) {
+  return a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });
+}
+
+let filtered = [];
+let detailSortCol = -1, detailSortAsc = true;
+
+function applyFilters() {
+  const q = document.getElementById('fsearch').value.toLowerCase().trim();
+  const fm = document.getElementById('fmodel').value;
+  const fc = document.getElementById('fcond').value;
+  const fs = document.getElementById('fscore').value;
+
+  // structural filters first (fast)
+  filtered = RAW.filter(r => {
+    if (fm && r.model !== fm) return false;
+    if (fc && r.condition !== fc) return false;
+    if (fs === 'null' && r.score !== null) return false;
+    if (fs && fs !== 'null' && String(r.score) !== fs) return false;
+    return true;
+  });
+
+  if (!q) return;
+  if (!corpus.length) return;
+  filtered = filtered.filter(r => corpus[rawIndexMap.get(r)].includes(q));
+}
+
+const PAGE_SIZE = 100;
+let currentPage = 0;
+
+function renderDetail() {
+  const total = filtered.length;
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  currentPage = Math.min(currentPage, totalPages - 1);
+  const start = currentPage * PAGE_SIZE;
+  const pageRows = filtered.slice(start, start + PAGE_SIZE);
+
+  document.getElementById('count').textContent =
+    `(${total} rows — page ${currentPage + 1}/${totalPages})`;
+
+  const dtbl = document.getElementById('dtbl');
+  dtbl.innerHTML = '';
+  const frag = document.createDocumentFragment();
+  for (const r of pageRows) {
+    const bg = r.score !== null ? (scoreCls[r.score] || '') : 'bg-gray-50';
+    const tr = document.createElement('tr');
+    tr.className = bg;
+    const origIdx = rawIndexMap.get(r);
+    tr.innerHTML = `
+      <td class="border border-gray-300 px-3 py-1 align-top">${esc(r.model)}</td>
+      <td class="border border-gray-300 px-3 py-1 align-top">${esc(r.condition)}</td>
+      <td class="border border-gray-300 px-3 py-1 text-center align-top font-bold">${r.score !== null ? r.score : '—'}</td>
+      ${questionCell(origIdx)}
+      ${answerCell(origIdx)}
+    `;
+    frag.appendChild(tr);
+  }
+  dtbl.appendChild(frag);
+
+  const paginationHtml = totalPages <= 1 ? '' : `
+    <button onclick="goPage(${currentPage-1})" ${currentPage===0?'disabled':''} class="border border-gray-300 rounded px-2 py-1 text-xs disabled:opacity-40">&lt; Prev</button>
+    <span class="text-xs text-gray-500">Page ${currentPage+1} of ${totalPages} (${start+1}-${Math.min(start+PAGE_SIZE,total)} of ${total})</span>
+    <button onclick="goPage(${currentPage+1})" ${currentPage===totalPages-1?'disabled':''} class="border border-gray-300 rounded px-2 py-1 text-xs disabled:opacity-40">Next &gt;</button>
+  `;
+  document.getElementById('pagination').innerHTML = paginationHtml;
+  document.getElementById('pagination-bottom').innerHTML = paginationHtml;
+}
+
+function goPage(p) {
+  currentPage = p;
+  renderDetail();
+  const heading = document.getElementById('detail-heading');
+  if (heading) window.scrollTo({ top: heading.offsetTop - 16, behavior: 'smooth' });
+}
+
+function render() { currentPage = 0; applyFilters(); renderDetail(); }
+
+function sortDetail(col) {
+  currentPage = 0;
+  applyFilters();
+  const keys = ['model','condition','score'];
+  const key = keys[col];
+  if (detailSortCol === col) detailSortAsc = !detailSortAsc;
+  else { detailSortCol = col; detailSortAsc = true; }
+  filtered.sort((a, b) => {
+    const av = a[key] ?? '', bv = b[key] ?? '';
+    const n = parseFloat(av) - parseFloat(bv);
+    const cmp = isNaN(n) ? naturalCmp(String(av), String(bv)) : n;
+    return detailSortAsc ? cmp : -cmp;
+  });
+  renderDetail();
+}
+
+function sortTbl(id, col) {
+  const tbody = document.getElementById(id);
+  const rows = [...tbody.rows];
+  const asc = tbody.dataset.col == col && tbody.dataset.dir !== 'asc';
+  rows.sort((a, b) => {
+    const av = a.cells[col].textContent.trim();
+    const bv = b.cells[col].textContent.trim();
+    const n = parseFloat(av) - parseFloat(bv);
+    return isNaN(n) ? (asc?1:-1)*av.localeCompare(bv) : (asc?1:-1)*n;
+  });
+  rows.forEach(r => tbody.appendChild(r));
+  tbody.dataset.col = col; tbody.dataset.dir = asc ? 'asc' : 'desc';
+  document.querySelectorAll('.stbl-arrow').forEach((el, i) => {
+    el.textContent = i === col ? (asc ? '↑' : '↓') : '↕';
+    el.className = 'stbl-arrow stbl-arrow-' + i + (i === col ? ' text-blue-600 font-bold' : ' text-gray-400');
+  });
+}
+
+function findSamePrompt(q) {
+  const short = q.slice(0, 80).replace(/\s+/g, ' ').trim();
+  document.getElementById('fsearch').value = short;
+  debouncedRender();
+  document.getElementById('fsearch').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function highlightBaselineRow(key) {
+  const row = document.querySelector('#stbl tr[data-key="' + key + '"]');
+  if (!row) return;
+  row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  row.style.transition = 'background 0s';
+  row.style.background = '#fef08a';
+  setTimeout(() => {
+    row.style.transition = 'background 1.5s ease';
+    row.style.background = '';
+  }, 600);
+}
+
+function computeBaselineKey(model, condition) {
+  // augmented variants compare against the plain chat model (same condition without augmented_ prefix)
+  if (condition.startsWith('augmented_')) {
+    return model + ':' + condition.slice('augmented_'.length);
+  }
+  // lora_constrainedsft must be checked before lora_sft (it contains the substring)
+  if (condition.includes('lora_constrainedsft')) {
+    return model + ':' + condition.replace('lora_constrainedsft', 'lora_sft');
+  }
+  // constrainedsft (non-lora) variants compare against lora_sft variants
+  if (condition.includes('constrainedsft')) {
+    return model + ':' + condition.replace('constrainedsft', 'lora_sft');
+  }
+  // lora_sft: no baseline exists (sft_* conditions are not in the dataset)
+  // instruct/chat models compare against their base model counterpart
+  const baseModelMap = {
+    'llama2_chat': 'llama2_base',
+    'gemma_it': 'gemma_base',
+    'qwen35_4b_instruct': 'qwen35_4b_base'
+  };
+  const baseModel = baseModelMap[model];
+  if (baseModel) return baseModel + ':' + condition;
+  return null;
+}
+
+function init() {
+  rawIndexMap = new Map(RAW.map((r, i) => [r, i]));
+  corpus = RAW.map(r => (r.question + ' ' + (r.suffix||'') + ' ' + r.prefix + ' ' + r.continuation).toLowerCase());
+
+  const fileMap = {};
+  for (const r of RAW) {
+    if (!fileMap[r.file]) fileMap[r.file] = { model: r.model, condition: r.condition, total: r.total, judged: r.judged, scores: [] };
+    if (r.score !== null && r.score > 0) fileMap[r.file].scores.push(r.score);
+  }
+
+  const summaryRows = Object.values(fileMap).sort((a, b) =>
+    naturalCmp(a.model + a.condition, b.model + b.condition)
+  );
+
+  // Build asrByKey and harmByKey maps: key = "model:condition"
+  const asrByKey = new Map();
+  const harmByKey = new Map();
+  for (const s of summaryRows) {
+    const key = s.model + ':' + s.condition;
+    asrByKey.set(key, s.scores.length ? s.scores.filter(x => x === 5).length / s.scores.length : null);
+    harmByKey.set(key, s.scores.length ? s.scores.reduce((a,b)=>a+b,0)/s.scores.length : null);
+  }
+
+  function deltaSpan(d, baseKey, isPercent) {
+    const sign = d >= 0 ? '+' : '';
+    const color = d > 0.5 ? 'text-red-600' : d < -0.5 ? 'text-green-600' : 'text-gray-500';
+    const suffix = isPercent ? '%' : '';
+    const baseCond = baseKey.includes(':') ? baseKey.split(':').slice(1).join(':') : baseKey;
+    const tooltip = 'vs baseline: ' + baseCond + ' - click to highlight';
+    return `<span class="ml-1 text-xs font-mono ${color} cursor-pointer underline decoration-dotted hover:decoration-solid delta-link" data-basekey="${baseKey.replace(/"/g,'&quot;')}" title="${tooltip.replace(/"/g,'&quot;')}">(${sign}${d.toFixed(1)}${suffix})</span>`;
+  }
+
+  const stbl = document.getElementById('stbl');
+  for (const s of summaryRows) {
+    const pct = s.total ? Math.round(s.judged / s.total * 100) : 0;
+    const harmVal = s.scores.length ? s.scores.reduce((a,b)=>a+b,0)/s.scores.length : null;
+    const asrVal  = s.scores.length ? s.scores.filter(x=>x===5).length/s.scores.length : null;
+    const harmStr = harmVal !== null ? harmVal.toFixed(3) : '—';
+    const asrStr  = asrVal  !== null ? (asrVal*100).toFixed(1)+'%' : '—';
+    const w = String(s.total).length;
+    const progressStr = String(s.judged).padStart(w) + '/' + s.total;
+
+    const baseKey = computeBaselineKey(s.model, s.condition);
+    const baseAsr  = baseKey ? (asrByKey.get(baseKey)  ?? null) : null;
+    const baseHarm = baseKey ? (harmByKey.get(baseKey) ?? null) : null;
+
+    const harmDelta = (harmVal !== null && baseHarm !== null) ? deltaSpan(harmVal - baseHarm, baseKey, false) : '';
+    const asrDelta  = (asrVal  !== null && baseAsr  !== null) ? deltaSpan((asrVal - baseAsr)*100, baseKey, true) : '';
+
+    const tr = document.createElement('tr');
+    tr.dataset.key = s.model + ':' + s.condition;
+    tr.innerHTML = `
+      <td class="border border-gray-300 px-3 py-1">${esc(s.model)}</td>
+      <td class="border border-gray-300 px-3 py-1">${esc(s.condition)}</td>
+      <td class="border border-gray-300 px-3 py-1 text-right">
+        <div class="flex items-center gap-1 justify-end">
+          <div class="w-20 bg-gray-200 rounded h-2">
+            <div class="bg-blue-500 h-2 rounded" style="width:${pct}%"></div>
+          </div>
+          <span style="white-space:pre">${progressStr}</span>
+        </div>
+      </td>
+      <td class="border border-gray-300 px-3 py-1 text-right">${harmStr}${harmDelta}</td>
+      <td class="border border-gray-300 px-3 py-1 text-right">${asrStr}${asrDelta}</td>
+    `;
+    stbl.appendChild(tr);
+  }
+
+  const models = [...new Set(RAW.map(r=>r.model))].sort();
+  const conds  = [...new Set(RAW.map(r=>r.condition))].sort(naturalCmp);
+  const fmodel = document.getElementById('fmodel');
+  const fcond  = document.getElementById('fcond');
+  models.forEach(m => { const o=document.createElement('option'); o.value=o.textContent=m; fmodel.appendChild(o); });
+  conds.forEach(c  => { const o=document.createElement('option'); o.value=o.textContent=c; fcond.appendChild(o); });
+
+  render();
+
+}
+
+document.addEventListener('click', e => {
+  const el = e.target.closest('.delta-link');
+  if (el) highlightBaselineRow(el.dataset.basekey);
+});
+
+loadData();
+</script>
+</body>
+</html>
