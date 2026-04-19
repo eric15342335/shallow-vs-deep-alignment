@@ -36,6 +36,16 @@ class Chat:
             self.string_formatter = GemmaStringConverter.string_formatter_completion_only
             self.default_system_prompt = default_system_prompt
             self.stopping_criteria = base_stopping_criteria
+        elif prompt_style == 'qwen':
+            from finetuning_buckets.models.model_families.qwen import QwenStringConverter, default_system_prompt
+            self.string_formatter = QwenStringConverter.string_formatter_completion_only
+            self.default_system_prompt = default_system_prompt
+            self.stopping_criteria = None
+        elif prompt_style == 'qwen_base':
+            from finetuning_buckets.models.model_families.qwen_base import QwenStringConverter, default_system_prompt, base_stopping_criteria
+            self.string_formatter = QwenStringConverter.string_formatter_completion_only
+            self.default_system_prompt = default_system_prompt
+            self.stopping_criteria = base_stopping_criteria
         else:
             raise ValueError(f"Prompt style {prompt_style} not supported")
 

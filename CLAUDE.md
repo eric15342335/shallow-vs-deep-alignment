@@ -60,3 +60,24 @@ The paper uses custom comment macros for author collaboration:
 ```
 
 Safe/unsafe dialogue examples are typeset using `tcolorbox` environments defined in the preamble.
+
+## Dependencies
+
+There are **two pinned requirement files** because Qwen models require a newer version of `transformers` (>=4.51.0) that is incompatible with the version needed for Llama-2 and Gemma experiments (==4.40.2):
+
+| File | Models | transformers |
+|------|--------|-------------|
+| `requirements-llama-gemma.txt` | Llama-2, Gemma | ==4.40.2 |
+| `requirements-qwen.txt` | Qwen-2.5 | >=4.51.0 |
+
+`uv.lock` is the authoritative lock file for the Qwen environment (managed via `uv`). `requirements-qwen.txt` is exported from it for pip users.
+
+```bash
+# Install for Qwen experiments (recommended)
+uv sync
+
+# Install for Llama-2 / Gemma experiments (pip)
+pip install -r requirements-llama-gemma.txt
+```
+
+All versions are fully pinned — do not loosen pins without testing both model families.
